@@ -1,0 +1,16 @@
+node_modules/
+.DS_Store
+
+# next / vercel (web/ arrives in session 2)
+.next/
+out/
+.vercel
+
+# derived from posts/*.md by web/scripts/sync-content.mjs — never edited by hand
+web/src/content.generated.json
+
+# typescript / env
+*.tsbuildinfo
+next-env.d.ts
+.env*
+
