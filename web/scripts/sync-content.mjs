@@ -98,13 +98,28 @@ function withHeadingAnchors(html) {
   });
 }
 
+/**
+ * marked escapes text for HTML, so heading source like "won't" arrives as
+ * "won&#39;t". The TOC renders as React text, not HTML, so it has to be
+ * decoded back or the entity shows up literally on the page.
+ */
+function decodeEntities(s) {
+  return s
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+}
+
 /** Pulls h2 text out of the rendered HTML for an on-page table of contents. */
 function tableOfContents(html) {
   const out = [];
   const re = /<h2 id="([^"]+)">([\s\S]*?)<\/h2>/g;
   let m;
   while ((m = re.exec(html))) {
-    out.push({ id: m[1], text: m[2].replace(/<[^>]+>/g, "").trim() });
+    out.push({ id: m[1], text: decodeEntities(m[2].replace(/<[^>]+>/g, "")).trim() });
   }
   return out;
 }

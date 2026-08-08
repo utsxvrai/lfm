@@ -71,11 +71,141 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* ------------------------------------------------------------------ shell
+   Three zones on a wide screen: a sticky identity rail on the left, the
+   reading column in the middle, and — on article pages — a sticky table of
+   contents on the right. Below 1080px it all stacks and the rail becomes a
+   horizontal bar. */
+
+.shell {
+  display: grid;
+  grid-template-columns: 12.5rem minmax(0, 1fr);
+  gap: 0 3.5rem;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: 1.6rem;
+  align-items: start;
+}
+
+.rail-left {
+  position: sticky;
+  top: 0;
+  padding-top: 3.2rem;
+}
+
+.rail-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rail-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 1.02rem;
+}
+
+.rail-nav a {
+  color: var(--ink-2);
+  width: fit-content;
+}
+
+.rail-nav a:hover {
+  color: var(--accent);
+}
+
+.rail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.rail-links {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.rail-links a:hover {
+  color: var(--accent);
+}
+
+.col-main {
+  min-width: 0;
+  padding-bottom: 6rem;
+}
+
+/* The reading column. Wider than the old 40rem, still inside a sane measure. */
 .wrap {
   width: 100%;
-  max-width: 40rem;
-  margin-inline: auto;
-  padding-inline: 1.35rem;
+  max-width: 44rem;
+  padding-inline: 0;
+}
+
+/* Article pages get a third column for the TOC. */
+.with-toc {
+  display: grid;
+  grid-template-columns: minmax(0, 44rem) 12rem;
+  gap: 0 3rem;
+  align-items: start;
+}
+
+.rail-toc {
+  position: sticky;
+  top: 3.2rem;
+  /* lines the TOC up with the article's first line rather than the page top */
+  margin-top: 4.2rem;
+}
+
+@media (max-width: 1080px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    max-width: 46rem;
+    padding-inline: 1.35rem;
+  }
+
+  .rail-left {
+    position: static;
+    padding-top: 1.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+
+  .rail-inner {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.1rem;
+  }
+
+  .rail-nav {
+    flex-direction: row;
+    gap: 0.9rem;
+    font-size: 0.97rem;
+  }
+
+  .rail-meta {
+    display: none;
+  }
+
+  .rail-links {
+    margin-left: auto;
+  }
+
+  .with-toc {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rail-toc {
+    display: none;
+  }
 }
 
 a {

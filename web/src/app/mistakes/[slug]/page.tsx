@@ -30,49 +30,75 @@ export default async function MistakePage({ params }: Props) {
   if (!post) notFound();
 
   const time = formatTimeLost(post.timeLost);
+  const showToc = post.toc.length >= 3;
 
   return (
-    <article className="wrap py-11 sm:py-14">
-      <Link href="/mistakes" className="hand text-[15px] dimmer no-underline hover:underline">
-        ← all mistakes
-      </Link>
+    <div className={showToc ? "with-toc" : ""}>
+      <article className="wrap py-11 sm:py-14">
+        <Link href="/" className="hand text-[15px] dimmer no-underline hover:underline">
+          ← all mistakes
+        </Link>
 
-      <header className="mt-9">
-        <div className="hand flex flex-wrap items-baseline gap-3 text-[15px]">
-          <span className="tnum" style={{ color: "var(--accent)" }}>
-            #{post.num}
-          </span>
-          {post.date && <span className="tnum dimmer">{post.date}</span>}
-          <span className="dimmer">{post.readingTime} min read</span>
-        </div>
-
-        <h1 className="mt-3 text-[1.85rem] sm:text-[2.25rem] font-semibold leading-[1.2]">
-          {post.title}
-        </h1>
-
-        {post.dek && (
-          <p className="mt-3.5 text-[1.08rem]" style={{ color: "var(--ink-2)" }}>
-            {post.dek}
-          </p>
-        )}
-
-        <div className="mt-5 flex flex-wrap items-center gap-1.5">
-          {post.rootCause && <span className="chip">{post.rootCause}</span>}
-          {post.detectedBy && <span className="chip">caught by {post.detectedBy}</span>}
-          {time && <span className="chip chip-accent tnum">{time} lost</span>}
-          {post.stack.map((s) => (
-            <span key={s} className="chip">
-              {s}
+        <header className="mt-9">
+          <div className="hand flex flex-wrap items-baseline gap-3 text-[15px]">
+            <span className="tnum" style={{ color: "var(--accent)" }}>
+              #{post.num}
             </span>
-          ))}
-        </div>
-      </header>
+            {post.date && <span className="tnum dimmer">{post.date}</span>}
+            <span className="dimmer">{post.readingTime} min read</span>
+          </div>
 
-      {/* Long posts get a jump list; short ones don't need the furniture. */}
-      {post.toc.length >= 4 && (
-        <nav className="toc mt-8" aria-label="On this page">
+          <h1 className="mt-3 text-[2rem] sm:text-[2.4rem] font-semibold leading-[1.18]">
+            {post.title}
+          </h1>
+
+          {post.dek && (
+            <p className="mt-4 text-[1.12rem]" style={{ color: "var(--ink-2)" }}>
+              {post.dek}
+            </p>
+          )}
+
+          <div className="mt-5 flex flex-wrap items-center gap-1.5">
+            {post.rootCause && <span className="chip">{post.rootCause}</span>}
+            {post.detectedBy && <span className="chip">caught by {post.detectedBy}</span>}
+            {time && <span className="chip chip-accent tnum">{time} lost</span>}
+            {post.stack.map((s) => (
+              <span key={s} className="chip">
+                {s}
+              </span>
+            ))}
+          </div>
+        </header>
+
+        <SketchRule className="mt-8" />
+
+        {/* The body ends with its own "The rule" section — `rule` in frontmatter
+            is data for the index and the eventual meta-post, not a second copy. */}
+        <div className="prose mt-9" dangerouslySetInnerHTML={{ __html: post.html }} />
+
+        <SketchRule className="mt-14" />
+
+        <footer className="mt-6">
+          <p className="hand text-[15px] dimmer">
+            One mistake a week.{" "}
+            <a
+              href="https://x.com/utsxvrai"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-2"
+              style={{ color: "var(--accent)" }}
+            >
+              Follow along on X
+            </a>
+            .
+          </p>
+        </footer>
+      </article>
+
+      {showToc && (
+        <nav className="rail-toc toc" aria-label="On this page">
           <p className="hand text-[14px] dimmer">on this page</p>
-          <ol className="mt-1.5">
+          <ol className="mt-2">
             {post.toc.map((t) => (
               <li key={t.id}>
                 <a href={`#${t.id}`}>{t.text}</a>
@@ -81,30 +107,6 @@ export default async function MistakePage({ params }: Props) {
           </ol>
         </nav>
       )}
-
-      <SketchRule className="mt-8" />
-
-      {/* The body ends with its own "The rule" section — `rule` in frontmatter
-          is data for the index and the eventual meta-post, not a second copy. */}
-      <div className="prose mt-9" dangerouslySetInnerHTML={{ __html: post.html }} />
-
-      <SketchRule className="mt-14" />
-
-      <footer className="mt-6">
-        <p className="hand text-[15px] dimmer">
-          One mistake a week.{" "}
-          <a
-            href="https://x.com/utsxvrai"
-            target="_blank"
-            rel="noreferrer"
-            className="underline underline-offset-2"
-            style={{ color: "var(--accent)" }}
-          >
-            Follow along on X
-          </a>
-          .
-        </p>
-      </footer>
-    </article>
+    </div>
   );
 }
