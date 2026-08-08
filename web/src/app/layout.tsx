@@ -52,19 +52,20 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <header>
           <div className="wrap flex items-center justify-between gap-4 py-5">
             <Link href="/" className="site-mark no-underline">
-              Learn From Mistakes
+              utsav rai
             </Link>
-            <div className="flex items-center gap-4">
-              <a
-                href="https://x.com/utsxvrai"
-                className="hand text-[14px] dimmer no-underline hover:underline"
-                target="_blank"
-                rel="noreferrer"
-              >
-                @utsxvrai
-              </a>
+            <nav className="hand flex items-center gap-4 text-[15px]">
+              <Link href="/mistakes" className="dimmer no-underline hover:underline">
+                mistakes
+              </Link>
+              <Link href="/projects" className="dimmer no-underline hover:underline">
+                projects
+              </Link>
+              <Link href="/about" className="dimmer no-underline hover:underline">
+                about
+              </Link>
               <ThemeToggle />
-            </div>
+            </nav>
           </div>
           <div className="wrap">
             <SketchRule />
@@ -78,7 +79,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <SketchRule className="mb-5" />
             <div className="flex flex-wrap items-center justify-between gap-3 text-[13px] dimmer hand">
               <span>
-                {content.count} {content.count === 1 ? "mistake" : "mistakes"} so far · one a week
+                {content.mistakes.length}{" "}
+                {content.mistakes.length === 1 ? "mistake" : "mistakes"} so far · one a week
               </span>
               <a
                 href="https://github.com/utsxvrai/lfm"

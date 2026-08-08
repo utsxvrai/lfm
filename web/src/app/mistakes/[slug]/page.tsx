@@ -1,39 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { allPosts, postBySlug, formatTimeLost } from "@/lib/content";
+import { allMistakes, mistakeBySlug, formatTimeLost } from "@/lib/content";
 import { SketchRule } from "@/components/SketchRule";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return allPosts().map((p) => ({ slug: p.slug }));
+  return allMistakes().map((p) => ({ slug: p.slug }));
 }
 
 export const dynamicParams = false;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = postBySlug(slug);
+  const post = mistakeBySlug(slug);
   if (!post) return {};
   return {
     title: post.title,
     description: post.dek,
-    alternates: { canonical: `/${post.slug}` },
+    alternates: { canonical: `/mistakes/${post.slug}` },
     openGraph: { title: post.title, description: post.dek, type: "article" },
   };
 }
 
-export default async function PostPage({ params }: Props) {
+export default async function MistakePage({ params }: Props) {
   const { slug } = await params;
-  const post = postBySlug(slug);
+  const post = mistakeBySlug(slug);
   if (!post) notFound();
 
   const time = formatTimeLost(post.timeLost);
 
   return (
     <article className="wrap py-11 sm:py-14">
-      <Link href="/" className="hand text-[15px] dimmer no-underline hover:underline">
+      <Link href="/mistakes" className="hand text-[15px] dimmer no-underline hover:underline">
         ← all mistakes
       </Link>
 
@@ -68,11 +68,24 @@ export default async function PostPage({ params }: Props) {
         </div>
       </header>
 
+      {/* Long posts get a jump list; short ones don't need the furniture. */}
+      {post.toc.length >= 4 && (
+        <nav className="toc mt-8" aria-label="On this page">
+          <p className="hand text-[14px] dimmer">on this page</p>
+          <ol className="mt-1.5">
+            {post.toc.map((t) => (
+              <li key={t.id}>
+                <a href={`#${t.id}`}>{t.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+
       <SketchRule className="mt-8" />
 
-      {/* The body already ends with its own "The rule" section — `post.rule`
-          in frontmatter is data for the index and the eventual meta-post, not
-          a second copy to render here. */}
+      {/* The body ends with its own "The rule" section — `rule` in frontmatter
+          is data for the index and the eventual meta-post, not a second copy. */}
       <div className="prose mt-9" dangerouslySetInnerHTML={{ __html: post.html }} />
 
       <SketchRule className="mt-14" />

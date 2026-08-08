@@ -1,10 +1,16 @@
 /**
- * Reads the mistake posts (one level up from web/) and emits a single typed
+ * Reads every markdown collection in the repo root and emits a single typed
  * JSON blob the Next app imports at build time.
+ *
+ *   posts/     -> mistakes   (the LFM series)
+ *   notes/     -> notes      (shorter writing that isn't a mistake post)
+ *   projects/  -> projects   (what I've built)
+ *   about.md, resume.md      (standalone pages)
  *
  * Git stays the source of truth: edit the markdown, commit, Vercel rebuilds,
  * the site reflects it. Nothing in the app writes back.
  *
+ * Files prefixed with `_` are drafts and are skipped everywhere.
  * Override the content root with CONTENT_DIR if the checkout layout differs.
  */
 import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from "node:fs";
@@ -15,7 +21,6 @@ import { renderDiagram, sketchRulePath } from "./diagram.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(process.env.CONTENT_DIR ?? join(here, "..", ".."));
-const POSTS_DIR = join(ROOT, "posts");
 const OUT = join(here, "..", "src", "content.generated.json");
 
 marked.setOptions({ gfm: true, breaks: false });
@@ -24,7 +29,7 @@ marked.setOptions({ gfm: true, breaks: false });
 
 /**
  * Frontmatter is a deliberately small YAML subset — scalars and flat inline
- * arrays only, matching what `posts/*.md` is allowed to contain. Keeping the
+ * arrays only, matching what the markdown is allowed to contain. Keeping the
  * parser here (rather than adding gray-matter) means the schema can't quietly
  * grow past what the site knows how to render.
  */
@@ -47,7 +52,6 @@ function parseFrontmatter(raw) {
       data[key] = null;
       continue;
     }
-    // strip trailing `# comment`, but not a `#` inside a quoted string
     if (!/^["']/.test(value)) value = value.replace(/\s+#.*$/, "").trim();
 
     if (value.startsWith("[") && value.endsWith("]")) {
@@ -82,27 +86,64 @@ function readingTime(md) {
   return Math.max(1, Math.round(md.split(/\s+/).filter(Boolean).length / 200));
 }
 
-/* ------------------------------------------------------------------- read */
-
-if (!existsSync(POSTS_DIR)) {
-  throw new Error(`No posts/ directory at ${POSTS_DIR}. Set CONTENT_DIR or create it.`);
+/** Adds id="..." to h2/h3 so long posts get linkable section anchors. */
+function withHeadingAnchors(html) {
+  return html.replace(/<(h[23])>([\s\S]*?)<\/\1>/g, (full, tag, inner) => {
+    const slug = inner
+      .replace(/<[^>]+>/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    return `<${tag} id="${slug}">${inner}</${tag}>`;
+  });
 }
 
-const files = readdirSync(POSTS_DIR)
-  .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
-  .sort();
+/** Pulls h2 text out of the rendered HTML for an on-page table of contents. */
+function tableOfContents(html) {
+  const out = [];
+  const re = /<h2 id="([^"]+)">([\s\S]*?)<\/h2>/g;
+  let m;
+  while ((m = re.exec(html))) {
+    out.push({ id: m[1], text: m[2].replace(/<[^>]+>/g, "").trim() });
+  }
+  return out;
+}
 
-const posts = files.map((file) => {
-  const slug = file.replace(/\.md$/, "");
-  const raw = readFileSync(join(POSTS_DIR, file), "utf8");
-  const { data, body } = parseFrontmatter(raw);
-
-  if (!data.title) throw new Error(`${file}: missing "title" in frontmatter`);
-  if (data.id == null) throw new Error(`${file}: missing "id" in frontmatter`);
-
+function renderBody(body) {
   const clean = stripLeadingH1(body);
-  const withDiagrams = renderDiagrams(clean);
+  const html = withHeadingAnchors(marked.parse(renderDiagrams(clean)));
+  return { html, toc: tableOfContents(html), readingTime: readingTime(clean) };
+}
 
+/** Reads every non-draft .md in a directory. Missing directory -> []. */
+function collection(dirName, map) {
+  const dir = join(ROOT, dirName);
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
+    .sort()
+    .map((file) => {
+      const raw = readFileSync(join(dir, file), "utf8");
+      const { data, body } = parseFrontmatter(raw);
+      const slug = file.replace(/\.md$/, "");
+      if (!data.title) throw new Error(`${dirName}/${file}: missing "title" in frontmatter`);
+      return map({ slug, data, ...renderBody(body) });
+    });
+}
+
+/** Reads a standalone page like about.md. Missing file -> null. */
+function page(fileName) {
+  const p = join(ROOT, fileName);
+  if (!existsSync(p)) return null;
+  const { data, body } = parseFrontmatter(readFileSync(p, "utf8"));
+  const { html, toc, readingTime: rt } = renderBody(body);
+  return { title: data.title ?? "", dek: data.dek ?? "", html, toc, readingTime: rt };
+}
+
+/* ------------------------------------------------------------------- read */
+
+const mistakes = collection("posts", ({ slug, data, html, toc, readingTime: rt }) => {
+  if (data.id == null) throw new Error(`posts/${slug}.md: missing "id" in frontmatter`);
   return {
     slug,
     id: data.id,
@@ -115,23 +156,52 @@ const posts = files.map((file) => {
     detectedBy: data.detected_by ?? null,
     stack: Array.isArray(data.stack) ? data.stack : [],
     rule: data.rule ?? "",
-    readingTime: readingTime(clean),
-    html: marked.parse(withDiagrams),
+    readingTime: rt,
+    toc,
+    html,
   };
-});
+}).sort((a, b) => b.id - a.id);
 
-posts.sort((a, b) => b.id - a.id); // newest first
+const notes = collection("notes", ({ slug, data, html, toc, readingTime: rt }) => ({
+  slug,
+  title: data.title,
+  dek: data.dek ?? "",
+  date: data.date ?? null,
+  tags: Array.isArray(data.tags) ? data.tags : [],
+  readingTime: rt,
+  toc,
+  html,
+})).sort((a, b) => String(b.date ?? "").localeCompare(String(a.date ?? "")));
 
-const totalTimeLost = posts.reduce((sum, p) => sum + (p.timeLost ?? 0), 0);
+const projects = collection("projects", ({ slug, data, html }) => ({
+  slug,
+  title: data.title,
+  tagline: data.tagline ?? "",
+  stack: Array.isArray(data.stack) ? data.stack : [],
+  status: data.status ?? null,
+  year: data.year ?? null,
+  repo: data.repo ?? null,
+  url: data.url ?? null,
+  featured: data.featured === "true" || data.featured === true,
+  html,
+})).sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
 
 const content = {
   generatedAt: new Date().toISOString(),
   rulePath: sketchRulePath(),
-  count: posts.length,
-  totalTimeLost,
-  posts,
+  mistakes,
+  notes,
+  projects,
+  pages: {
+    about: page("about.md"),
+    resume: page("resume.md"),
+  },
+  totalTimeLost: mistakes.reduce((s, m) => s + (m.timeLost ?? 0), 0),
 };
 
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, JSON.stringify(content, null, 2));
-console.log(`synced ${posts.length} post(s) -> src/content.generated.json`);
+console.log(
+  `synced ${mistakes.length} mistake(s), ${notes.length} note(s), ` +
+    `${projects.length} project(s) -> src/content.generated.json`,
+);

@@ -1,6 +1,8 @@
 import generated from "@/content.generated.json";
 
-export type Post = {
+export type TocEntry = { id: string; text: string };
+
+export type Mistake = {
   slug: string;
   id: number;
   num: string;
@@ -13,35 +15,74 @@ export type Post = {
   stack: string[];
   rule: string;
   readingTime: number;
+  toc: TocEntry[];
   html: string;
+};
+
+export type Note = {
+  slug: string;
+  title: string;
+  dek: string;
+  date: string | null;
+  tags: string[];
+  readingTime: number;
+  toc: TocEntry[];
+  html: string;
+};
+
+export type Project = {
+  slug: string;
+  title: string;
+  tagline: string;
+  stack: string[];
+  status: string | null;
+  year: number | null;
+  repo: string | null;
+  url: string | null;
+  featured: boolean;
+  html: string;
+};
+
+export type Page = {
+  title: string;
+  dek: string;
+  html: string;
+  toc: TocEntry[];
+  readingTime: number;
 };
 
 export type Content = {
   generatedAt: string;
   rulePath: string;
-  count: number;
+  mistakes: Mistake[];
+  notes: Note[];
+  projects: Project[];
+  pages: { about: Page | null; resume: Page | null };
   totalTimeLost: number;
-  posts: Post[];
 };
 
 export const content = generated as Content;
 
-/** Newest first — the order the sync script emits. */
-export const allPosts = (): Post[] => content.posts;
+/* ---------------------------------------------------------------- lookups */
 
-export const postBySlug = (slug: string): Post | undefined =>
-  content.posts.find((p) => p.slug === slug);
+export const allMistakes = (): Mistake[] => content.mistakes;
+export const mistakeBySlug = (slug: string) => content.mistakes.find((m) => m.slug === slug);
 
-/** Grouped for the "N mistakes, categorized" view once there are enough posts. */
-export function byRootCause(): Array<{ cause: string; posts: Post[] }> {
-  const map = new Map<string, Post[]>();
-  for (const p of content.posts) {
-    const key = p.rootCause ?? "uncategorized";
-    map.set(key, [...(map.get(key) ?? []), p]);
+export const allNotes = (): Note[] => content.notes;
+export const noteBySlug = (slug: string) => content.notes.find((n) => n.slug === slug);
+
+export const allProjects = (): Project[] => content.projects;
+
+/** Grouped for the eventual "N mistakes, categorized" meta-post. */
+export function byRootCause(): Array<{ cause: string; count: number }> {
+  const map = new Map<string, number>();
+  for (const m of content.mistakes) {
+    const key = m.rootCause ?? "uncategorized";
+    map.set(key, (map.get(key) ?? 0) + 1);
   }
   return [...map.entries()]
-    .map(([cause, posts]) => ({ cause, posts }))
-    .sort((a, b) => b.posts.length - a.posts.length);
+    .map(([cause, count]) => ({ cause, count }))
+    .sort((a, b) => b.count - a.count);
 }
 
 export function formatTimeLost(minutes: number | null): string | null {
