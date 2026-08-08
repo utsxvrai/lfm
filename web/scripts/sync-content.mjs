@@ -11,6 +11,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from 
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { marked } from "marked";
+import { renderDiagram, sketchRulePath } from "./diagram.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(process.env.CONTENT_DIR ?? join(here, "..", ".."));
@@ -69,6 +70,14 @@ function stripLeadingH1(md) {
   return md.replace(/^#\s+.*\n+/, "");
 }
 
+/**
+ * ```diagram fences become inline hand-drawn SVG before marked runs, so the
+ * markdown stays readable on GitHub and the site gets a real figure.
+ */
+function renderDiagrams(md) {
+  return md.replace(/```diagram\n([\s\S]*?)```/g, (_, src) => `\n${renderDiagram(src)}\n`);
+}
+
 function readingTime(md) {
   return Math.max(1, Math.round(md.split(/\s+/).filter(Boolean).length / 200));
 }
@@ -92,6 +101,7 @@ const posts = files.map((file) => {
   if (data.id == null) throw new Error(`${file}: missing "id" in frontmatter`);
 
   const clean = stripLeadingH1(body);
+  const withDiagrams = renderDiagrams(clean);
 
   return {
     slug,
@@ -106,7 +116,7 @@ const posts = files.map((file) => {
     stack: Array.isArray(data.stack) ? data.stack : [],
     rule: data.rule ?? "",
     readingTime: readingTime(clean),
-    html: marked.parse(clean),
+    html: marked.parse(withDiagrams),
   };
 });
 
@@ -116,6 +126,7 @@ const totalTimeLost = posts.reduce((sum, p) => sum + (p.timeLost ?? 0), 0);
 
 const content = {
   generatedAt: new Date().toISOString(),
+  rulePath: sketchRulePath(),
   count: posts.length,
   totalTimeLost,
   posts,

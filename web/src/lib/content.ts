@@ -18,6 +18,7 @@ export type Post = {
 
 export type Content = {
   generatedAt: string;
+  rulePath: string;
   count: number;
   totalTimeLost: number;
   posts: Post[];

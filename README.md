@@ -11,7 +11,7 @@ below are the source of truth)*.
 
 | # | Mistake | Root cause | Caught by |
 | --- | --- | --- | --- |
-| [001](posts/001-esbuild-name-helper.md) | My browser agent died on a function name it never wrote | leaky-abstraction | manual testing |
+| [001](posts/001-alter-table-after-column.md) | One keyword turned an instant migration into a two-minute outage | wrong-assumption | alert |
 
 ## The shape
 

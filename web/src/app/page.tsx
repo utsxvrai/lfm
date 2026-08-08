@@ -1,27 +1,29 @@
 import Link from "next/link";
-import { allPosts, content, formatTimeLost } from "@/lib/content";
+import { allPosts, formatTimeLost } from "@/lib/content";
+import { SketchRule } from "@/components/SketchRule";
 
 export default function Home() {
   const posts = allPosts();
 
   return (
     <div className="wrap">
-      <section className="py-14 sm:py-20">
-        <h1 className="text-[1.75rem] sm:text-[2.1rem] font-semibold leading-[1.15] tracking-[-0.02em]">
+      <section className="pt-12 pb-10 sm:pt-16">
+        <h1 className="hand text-[2.1rem] sm:text-[2.6rem] font-bold leading-[1.12]">
           Real backend mistakes,
           <br />
           one at a time.
         </h1>
-        <p className="mt-5 max-w-[34rem] text-[1.0625rem]" style={{ color: "var(--ink-2)" }}>
+        <p className="mt-6 text-[1.05rem]" style={{ color: "var(--ink-2)" }}>
           Not tutorials. Each post is one thing I got wrong: what broke, what I wrongly believed,
           what was actually happening, and the rule I follow now.
         </p>
-        <p className="mt-4 text-[13px] dimmer">
+        <p className="mt-4 text-[0.95rem] dimmer">
           By{" "}
           <a
             href="https://x.com/utsxvrai"
             target="_blank"
             rel="noreferrer"
+            style={{ color: "var(--accent)" }}
             className="underline underline-offset-2"
           >
             Utsav Rai
@@ -30,33 +32,36 @@ export default function Home() {
         </p>
       </section>
 
-      <ol className="border-t" style={{ borderColor: "var(--border)" }}>
-        {posts.map((p) => {
+      <SketchRule />
+
+      <ol className="mt-2">
+        {posts.map((p, i) => {
           const time = formatTimeLost(p.timeLost);
           return (
-            <li key={p.slug} className="border-b" style={{ borderColor: "var(--border)" }}>
-              <Link href={`/${p.slug}`} className="group block py-7 no-underline">
-                <div className="flex items-baseline gap-3">
-                  <span className="mono tnum text-[12px]" style={{ color: "var(--accent)" }}>
+            <li key={p.slug}>
+              {i > 0 && <SketchRule className="my-1 opacity-60" />}
+              <Link href={`/${p.slug}`} className="group block py-8 no-underline">
+                <div className="hand flex items-baseline gap-3 text-[15px]">
+                  <span className="tnum" style={{ color: "var(--accent)" }}>
                     #{p.num}
                   </span>
-                  {p.date && <span className="mono tnum text-[12px] dimmer">{p.date}</span>}
+                  {p.date && <span className="tnum dimmer">{p.date}</span>}
                 </div>
 
-                <h2 className="mt-2 text-[1.2rem] font-semibold leading-snug tracking-[-0.01em] group-hover:underline underline-offset-4">
+                <h2 className="mt-2 text-[1.4rem] font-semibold leading-snug group-hover:underline underline-offset-4 decoration-1">
                   {p.title}
                 </h2>
 
                 {p.dek && (
-                  <p className="mt-1.5 text-[15px]" style={{ color: "var(--ink-2)" }}>
+                  <p className="mt-2 text-[1rem]" style={{ color: "var(--ink-2)" }}>
                     {p.dek}
                   </p>
                 )}
 
-                <div className="mt-3.5 flex flex-wrap items-center gap-1.5">
+                <div className="mt-4 flex flex-wrap items-center gap-1.5">
                   {p.rootCause && <span className="chip">{p.rootCause}</span>}
                   {p.detectedBy && <span className="chip">caught by {p.detectedBy}</span>}
-                  {time && <span className="chip tnum">{time} lost</span>}
+                  {time && <span className="chip chip-accent tnum">{time} lost</span>}
                 </div>
               </Link>
             </li>
@@ -64,9 +69,7 @@ export default function Home() {
         })}
       </ol>
 
-      {content.count === 0 && (
-        <p className="py-16 text-center dimmer">No posts yet.</p>
-      )}
+      {posts.length === 0 && <p className="py-16 text-center dimmer hand">Nothing broken yet.</p>}
     </div>
   );
 }

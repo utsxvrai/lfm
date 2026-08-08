@@ -1,8 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Source_Serif_4, Kalam } from "next/font/google";
 import "./globals.css";
 import { content } from "@/lib/content";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { SketchRule } from "@/components/SketchRule";
+
+const serif = Source_Serif_4({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-serif",
+});
+
+/** Diagram labels and marginalia — the "drawn on an iPad" voice. */
+const hand = Kalam({
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  display: "swap",
+  variable: "--font-hand",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://learnfrommistakes.in"),
@@ -28,21 +44,20 @@ const THEME_BOOT = `try{var t=localStorage.getItem('theme');if(t)document.docume
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${serif.variable} ${hand.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
       </head>
       <body className="flex min-h-screen flex-col">
-        <header className="border-b" style={{ borderColor: "var(--border)" }}>
-          <div className="wrap flex items-center justify-between gap-4 py-4">
-            <Link href="/" className="mono text-[13px] font-semibold tracking-tight no-underline">
-              learnfrommistakes
-              <span className="dimmer tnum"> · {content.count}</span>
+        <header>
+          <div className="wrap flex items-center justify-between gap-4 py-5">
+            <Link href="/" className="site-mark no-underline">
+              Learn From Mistakes
             </Link>
             <div className="flex items-center gap-4">
               <a
                 href="https://x.com/utsxvrai"
-                className="mono text-[12px] dimmer no-underline hover:underline"
+                className="hand text-[14px] dimmer no-underline hover:underline"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -51,16 +66,29 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <ThemeToggle />
             </div>
           </div>
+          <div className="wrap">
+            <SketchRule />
+          </div>
         </header>
 
         <main className="flex-1 pb-24">{children}</main>
 
-        <footer className="border-t py-6" style={{ borderColor: "var(--border)" }}>
-          <div className="wrap flex flex-wrap items-center justify-between gap-3 text-[11.5px] dimmer">
-            <span className="mono">Written by Utsav Rai · one mistake a week</span>
-            <span className="mono tnum">
-              synced {content.generatedAt.slice(0, 16).replace("T", " ")} UTC
-            </span>
+        <footer className="py-8">
+          <div className="wrap">
+            <SketchRule className="mb-5" />
+            <div className="flex flex-wrap items-center justify-between gap-3 text-[13px] dimmer hand">
+              <span>
+                {content.count} {content.count === 1 ? "mistake" : "mistakes"} so far · one a week
+              </span>
+              <a
+                href="https://github.com/utsxvrai/lfm"
+                target="_blank"
+                rel="noreferrer"
+                className="no-underline hover:underline"
+              >
+                source on github
+              </a>
+            </div>
           </div>
         </footer>
       </body>
