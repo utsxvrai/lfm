@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Source_Serif_4, Kalam } from "next/font/google";
 import "./globals.css";
 import { SiteRail } from "@/components/SiteRail";
+import { Analytics } from "@vercel/analytics/next";
+import { Amplitude } from "@/components/Amplitude";
 
 const serif = Source_Serif_4({
   subsets: ["latin"],
@@ -50,6 +52,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <SiteRail />
           <main className="col-main">{children}</main>
         </div>
+        {/* Traffic (free on Hobby, ~1KB). Amplitude adds behaviour on top and
+            only loads when NEXT_PUBLIC_AMPLITUDE_API_KEY is set. */}
+        <Analytics />
+        <Amplitude />
       </body>
     </html>
   );
