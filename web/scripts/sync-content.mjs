@@ -4,9 +4,6 @@
  *
  *   posts/     -> mistakes   (my own production mistakes)
  *   incidents/ -> incidents  (public failures at other companies, sourced)
- *   notes/     -> notes      (shorter writing that isn't a mistake post)
- *   projects/  -> projects   (what I've built)
- *   about.md, resume.md      (standalone pages)
  *
  * Git stays the source of truth: edit the markdown, commit, Vercel rebuilds,
  * the site reflects it. Nothing in the app writes back.
@@ -147,15 +144,6 @@ function collection(dirName, map) {
     });
 }
 
-/** Reads a standalone page like about.md. Missing file -> null. */
-function page(fileName) {
-  const p = join(ROOT, fileName);
-  if (!existsSync(p)) return null;
-  const { data, body } = parseFrontmatter(readFileSync(p, "utf8"));
-  const { html, toc, readingTime: rt } = renderBody(body);
-  return { title: data.title ?? "", dek: data.dek ?? "", html, toc, readingTime: rt };
-}
-
 /* ------------------------------------------------------------------- read */
 
 const mistakes = collection("posts", ({ slug, data, html, toc, readingTime: rt }) => {
@@ -225,48 +213,17 @@ const incidents = collection("incidents", ({ slug, data, html, toc, readingTime:
   };
 }).sort((a, b) => b.date.localeCompare(a.date));
 
-const notes = collection("notes", ({ slug, data, html, toc, readingTime: rt }) => ({
-  slug,
-  title: data.title,
-  dek: data.dek ?? "",
-  date: data.date ?? null,
-  tags: Array.isArray(data.tags) ? data.tags : [],
-  readingTime: rt,
-  toc,
-  html,
-})).sort((a, b) => String(b.date ?? "").localeCompare(String(a.date ?? "")));
-
-const projects = collection("projects", ({ slug, data, html }) => ({
-  slug,
-  title: data.title,
-  tagline: data.tagline ?? "",
-  stack: Array.isArray(data.stack) ? data.stack : [],
-  status: data.status ?? null,
-  year: data.year ?? null,
-  repo: data.repo ?? null,
-  url: data.url ?? null,
-  featured: data.featured === "true" || data.featured === true,
-  html,
-})).sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
-
 const content = {
   generatedAt: new Date().toISOString(),
   rulePath: sketchRulePath(),
   mistakes,
   incidents,
   vocab: { kinds: KINDS, topics: TOPICS },
-  notes,
-  projects,
-  pages: {
-    about: page("about.md"),
-    resume: page("resume.md"),
-  },
   totalTimeLost: mistakes.reduce((s, m) => s + (m.timeLost ?? 0), 0),
 };
 
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, JSON.stringify(content, null, 2));
 console.log(
-  `synced ${mistakes.length} mistake(s), ${incidents.length} incident(s), ${notes.length} note(s), ` +
-    `${projects.length} project(s) -> src/content.generated.json`,
+  `synced ${mistakes.length} mistake(s), ${incidents.length} incident(s) -> src/content.generated.json`,
 );

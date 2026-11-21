@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { archive, content } from "@/lib/content";
 import { ArchiveFilter } from "@/components/ArchiveFilter";
 import { Avatar } from "@/components/Avatar";
@@ -8,10 +7,6 @@ export default function Home() {
   const companies = new Set(content.incidents.map((i) => i.company)).size;
   const years = entries.map((e) => e.year).filter(Boolean);
   const span = years.length ? Math.max(...years) - Math.min(...years) + 1 : 0;
-
-  const topicCounts = new Map<string, number>();
-  for (const e of entries) for (const t of e.topics) topicCounts.set(t, (topicCounts.get(t) ?? 0) + 1);
-  const topTopics = [...topicCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
 
   return (
     <ArchiveFilter
@@ -37,8 +32,7 @@ export default function Home() {
           </div>
           <p className="text-[0.9rem]" style={{ color: "var(--ink-2)" }}>
             I read the postmortems so you don&apos;t have to skim them. Each write-up covers what broke,
-            what the engineers believed, what was really going on, and the rule worth keeping. My own
-            production mistakes are in here too.
+            what the engineers believed, what was really going on, and the rule worth keeping.
           </p>
           <div className="flex flex-wrap gap-2">
             <a href="https://x.com/utsxvrai" target="_blank" rel="noreferrer" className="btn btn-solid no-underline">
@@ -47,9 +41,6 @@ export default function Home() {
             <a href="https://github.com/utsxvrai/lfm" target="_blank" rel="noreferrer" className="btn no-underline">
               GitHub
             </a>
-            <Link href="/about" className="btn no-underline" data-lfm-nav="about-sidebar">
-              About
-            </Link>
           </div>
         </div>
 
@@ -70,18 +61,6 @@ export default function Home() {
           )}
         </div>
 
-        {topTopics.length > 0 && (
-          <div>
-            <p className="side-title">Explore topics</p>
-            <div className="flex flex-wrap gap-2">
-              {topTopics.map(([t]) => (
-                <a key={t} href={`/?topic=${encodeURIComponent(t)}`} className="chip no-underline">
-                  {t}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
       </aside>
     </ArchiveFilter>
   );

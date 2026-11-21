@@ -62,47 +62,12 @@ export type ArchiveEntry = {
   readingTime: number;
 };
 
-export type Note = {
-  slug: string;
-  title: string;
-  dek: string;
-  date: string | null;
-  tags: string[];
-  readingTime: number;
-  toc: TocEntry[];
-  html: string;
-};
-
-export type Project = {
-  slug: string;
-  title: string;
-  tagline: string;
-  stack: string[];
-  status: string | null;
-  year: number | null;
-  repo: string | null;
-  url: string | null;
-  featured: boolean;
-  html: string;
-};
-
-export type Page = {
-  title: string;
-  dek: string;
-  html: string;
-  toc: TocEntry[];
-  readingTime: number;
-};
-
 export type Content = {
   generatedAt: string;
   rulePath: string;
   mistakes: Mistake[];
   incidents: Incident[];
   vocab: { kinds: string[]; topics: string[] };
-  notes: Note[];
-  projects: Project[];
-  pages: { about: Page | null; resume: Page | null };
   totalTimeLost: number;
 };
 
@@ -123,24 +88,8 @@ export function incidentNeighbours(slug: string): { newer: Incident | null; olde
   return { newer: list[i - 1] ?? null, older: list[i + 1] ?? null };
 }
 
-/** Personal mistakes and public incidents merged into one newest-first list. */
+/** Public incidents, newest first. (Personal mistakes are not on the site.) */
 export function archive(): ArchiveEntry[] {
-  const personal: ArchiveEntry[] = content.mistakes.map((m) => ({
-    slug: m.slug,
-    href: `/mistakes/${m.slug}`,
-    personal: true,
-    num: m.num,
-    title: m.title,
-    dek: m.dek,
-    date: m.date ?? "",
-    year: Number((m.date ?? "0").slice(0, 4)),
-    company: "me",
-    kind: "outage",
-    topics: m.rootCause ? [m.rootCause] : [],
-    stack: m.stack,
-    durationMin: m.timeLost,
-    readingTime: m.readingTime,
-  }));
   const publicOnes: ArchiveEntry[] = content.incidents.map((i) => ({
     slug: i.slug,
     href: `/incidents/${i.slug}`,
@@ -157,13 +106,8 @@ export function archive(): ArchiveEntry[] {
     durationMin: i.durationMin,
     readingTime: i.readingTime,
   }));
-  return [...personal, ...publicOnes].sort((a, b) => b.date.localeCompare(a.date));
+  return publicOnes.sort((a, b) => b.date.localeCompare(a.date));
 }
-
-export const allNotes = (): Note[] => content.notes;
-export const noteBySlug = (slug: string) => content.notes.find((n) => n.slug === slug);
-
-export const allProjects = (): Project[] => content.projects;
 
 /** Grouped for the eventual "N mistakes, categorized" meta-post. */
 export function byRootCause(): Array<{ cause: string; count: number }> {

@@ -105,9 +105,9 @@ export default async function IncidentPage({ params }: Props) {
             <Avatar name="Utsav Rai" size={40} />
             <div className="min-w-0">
               <p className="byline-name">
-                <Link href="/about" className="no-underline hover:underline">
+                <a href="https://x.com/utsxvrai" target="_blank" rel="noreferrer" className="no-underline hover:underline">
                   Utsav Rai
-                </Link>
+                </a>
               </p>
               <p className="byline-sub">
                 {post.readingTime} min read · about {post.company}, {prettyDate(post.date)}

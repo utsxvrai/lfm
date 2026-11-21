@@ -9,23 +9,21 @@ type Filters = {
   kind: string | null;
   topic: string | null;
   company: string | null;
-  decade: number | null;
-  personal: boolean;
+  year: number | null;
 };
 
-const EMPTY: Filters = { q: "", kind: null, topic: null, company: null, decade: null, personal: false };
+const EMPTY: Filters = { q: "", kind: null, topic: null, company: null, year: null };
 
 /** Filters live in the query string so a filtered view is a shareable link. */
 function readUrl(): Filters {
   const p = new URLSearchParams(window.location.search);
-  const decade = Number(p.get("decade"));
+  const year = Number(p.get("year"));
   return {
     q: p.get("q") ?? "",
     kind: p.get("kind"),
     topic: p.get("topic"),
     company: p.get("company"),
-    decade: Number.isFinite(decade) && decade > 0 ? decade : null,
-    personal: p.get("personal") === "1",
+    year: Number.isInteger(year) && year > 1900 ? year : null,
   };
 }
 
@@ -35,8 +33,7 @@ function writeUrl(f: Filters) {
   if (f.kind) p.set("kind", f.kind);
   if (f.topic) p.set("topic", f.topic);
   if (f.company) p.set("company", f.company);
-  if (f.decade) p.set("decade", String(f.decade));
-  if (f.personal) p.set("personal", "1");
+  if (f.year) p.set("year", String(f.year));
   const qs = p.toString();
   window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname);
 }
@@ -49,11 +46,10 @@ function counted(entries: ArchiveEntry[], pick: (e: ArchiveEntry) => string[]): 
 }
 
 function matches(e: ArchiveEntry, f: Filters): boolean {
-  if (f.personal && !e.personal) return false;
   if (f.kind && e.kind !== f.kind) return false;
   if (f.topic && !e.topics.includes(f.topic)) return false;
   if (f.company && e.company !== f.company) return false;
-  if (f.decade && Math.floor(e.year / 10) * 10 !== f.decade) return false;
+  if (f.year && e.year !== f.year) return false;
   if (f.q) {
     const hay = `${e.title} ${e.dek} ${e.company} ${e.topics.join(" ")} ${e.stack.join(" ")}`.toLowerCase();
     if (!f.q.toLowerCase().split(/\s+/).every((w) => hay.includes(w))) return false;
@@ -68,7 +64,9 @@ function Select({
   value,
   options,
   onChange,
+  className = "",
 }: {
+  className?: string;
   label: string;
   value: string | null;
   options: Array<[string, string]>;
@@ -76,7 +74,7 @@ function Select({
 }) {
   return (
     <select
-      className={`filter-select${value ? " on" : ""}`}
+      className={`filter-select${value ? " on" : ""} ${className}`}
       aria-label={label}
       value={value ?? ""}
       onChange={(e) => onChange(e.target.value || null)}
@@ -88,52 +86,6 @@ function Select({
         </option>
       ))}
     </select>
-  );
-}
-
-/** One section of the left rail: a vertical, toggleable list with counts. */
-function RailSection({
-  title,
-  options,
-  value,
-  onPick,
-  limit,
-  format = pretty,
-}: {
-  title: string;
-  options: Array<[string, number]>;
-  value: string | null;
-  onPick: (v: string | null) => void;
-  limit?: number;
-  format?: (v: string) => string;
-}) {
-  const [open, setOpen] = useState(false);
-  if (options.length === 0) return null;
-  const shown = open || !limit ? options : options.slice(0, limit);
-
-  return (
-    <section>
-      <p className="rail-section-title">{title}</p>
-      <div className="rail-list">
-        {shown.map(([v, n]) => (
-          <button
-            key={v}
-            type="button"
-            className="rail-item"
-            aria-pressed={value === v}
-            onClick={() => onPick(value === v ? null : v)}
-          >
-            <span className="truncate">{format(v)}</span>
-            <span className="n">{n}</span>
-          </button>
-        ))}
-        {limit && options.length > limit && (
-          <button type="button" className="rail-more text-left" onClick={() => setOpen(!open)}>
-            {open ? "Show less" : `Show all ${options.length}`}
-          </button>
-        )}
-      </div>
-    </section>
   );
 }
 
@@ -174,25 +126,29 @@ export function ArchiveFilter({
   const topics = useMemo(() => counted(entries, (e) => e.topics), [entries]);
   const kinds = useMemo(() => counted(entries, (e) => [e.kind]), [entries]);
   const companies = useMemo(
-    () => counted(entries.filter((e) => !e.personal), (e) => [e.company]),
+    () => counted(entries, (e) => [e.company]),
     [entries],
   );
-  const decades = useMemo(
-    () =>
-      counted(entries, (e) => (e.year ? [String(Math.floor(e.year / 10) * 10)] : [])).sort((a, b) =>
-        b[0].localeCompare(a[0]),
-      ),
-    [entries],
-  );
+  // Every year in the archive's span, so gaps are visible rather than hidden.
+  const years = useMemo(() => {
+    const n = new Map<number, number>();
+    for (const e of entries) if (e.year) n.set(e.year, (n.get(e.year) ?? 0) + 1);
+    if (n.size === 0) return [] as Array<[number, number]>;
+    const hi = Math.max(...n.keys());
+    const lo = Math.min(...n.keys());
+    const out: Array<[number, number]> = [];
+    for (let y = hi; y >= lo; y--) out.push([y, n.get(y) ?? 0]);
+    return out;
+  }, [entries]);
+  const maxPerYear = Math.max(1, ...years.map(([, c]) => c));
 
   const shown = entries.filter((e) => matches(e, f));
 
   const pills: Array<{ label: string; clear: () => void }> = [];
   if (f.topic) pills.push({ label: pretty(f.topic), clear: () => set({ topic: null }) });
-  if (f.decade) pills.push({ label: `${f.decade}s`, clear: () => set({ decade: null }) });
+  if (f.year) pills.push({ label: String(f.year), clear: () => set({ year: null }) });
   if (f.kind) pills.push({ label: pretty(f.kind), clear: () => set({ kind: null }) });
   if (f.company) pills.push({ label: f.company, clear: () => set({ company: null }) });
-  if (f.personal) pills.push({ label: "mine only", clear: () => set({ personal: false }) });
   if (f.q) pills.push({ label: `“${f.q}”`, clear: () => set({ q: "" }) });
 
   // Group by year; entries are already newest-first.
@@ -206,40 +162,56 @@ export function ArchiveFilter({
   return (
     <div className="home-grid">
       <aside className="filter-rail" aria-label="Filters">
-        <section>
-          <div className="rail-list">
-            <button type="button" className="rail-item" aria-pressed={!pills.length} onClick={() => setF(EMPTY)}>
-              <span>All stories</span>
-              <span className="n">{entries.length}</span>
-            </button>
-            <button
-              type="button"
-              className="rail-item"
-              aria-pressed={f.personal}
-              onClick={() => set({ personal: !f.personal })}
-            >
-              <span>My own mistakes</span>
-              <span className="n">{entries.filter((e) => e.personal).length}</span>
-            </button>
+        <div className="rail-list">
+          <button type="button" className="rail-item" aria-pressed={!pills.length} onClick={() => setF(EMPTY)}>
+            <span>All stories</span>
+            <span className="n">{entries.length}</span>
+          </button>
+        </div>
+
+        <section className="rail-half" aria-labelledby="rail-years">
+          <p id="rail-years" className="rail-section-title">
+            Year
+          </p>
+          <div className="rail-scroll rail-years">
+            {years.map(([y, n]) => (
+              <button
+                key={y}
+                type="button"
+                className="year-item"
+                aria-pressed={f.year === y}
+                disabled={n === 0}
+                onClick={() => set({ year: f.year === y ? null : y })}
+              >
+                <span className="tnum">{y}</span>
+                <span className="year-bar" aria-hidden="true">
+                  <span style={{ width: `${(n / maxPerYear) * 100}%` }} />
+                </span>
+                <span className="n">{n}</span>
+              </button>
+            ))}
           </div>
         </section>
-        <RailSection title="Topics" options={topics} value={f.topic} onPick={(v) => set({ topic: v })} limit={10} />
-        <RailSection
-          title="Decade"
-          options={decades}
-          value={f.decade ? String(f.decade) : null}
-          onPick={(v) => set({ decade: v ? Number(v) : null })}
-          format={(v) => `${v}s`}
-        />
-        <RailSection title="Kind" options={kinds} value={f.kind} onPick={(v) => set({ kind: v })} />
-        <RailSection
-          title="Company"
-          options={companies}
-          value={f.company}
-          onPick={(v) => set({ company: v })}
-          limit={10}
-          format={(v) => v}
-        />
+
+        <section className="rail-half" aria-labelledby="rail-topics">
+          <p id="rail-topics" className="rail-section-title">
+            Topics
+          </p>
+          <div className="rail-scroll rail-tags">
+            {topics.map(([t, n]) => (
+              <button
+                key={t}
+                type="button"
+                className="tag"
+                aria-pressed={f.topic === t}
+                onClick={() => set({ topic: f.topic === t ? null : t })}
+              >
+                {pretty(t)}
+                <span className="n">{n}</span>
+              </button>
+            ))}
+          </div>
+        </section>
       </aside>
 
       <div className="min-w-0">
@@ -276,29 +248,28 @@ export function ArchiveFilter({
             onChange={(e) => set({ q: e.target.value })}
             aria-label="Search the archive"
           />
-          <div className="narrow-filters">
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Select
+              className="narrow-only"
+              label="Any year"
+              value={f.year ? String(f.year) : null}
+              options={years.filter(([, n]) => n > 0).map(([y, n]) => [String(y), `${y} (${n})`])}
+              onChange={(v) => set({ year: v ? Number(v) : null })}
+            />
+            <Select
+              label="Any kind"
+              value={f.kind}
+              options={kinds.map(([k, n]) => [k, `${pretty(k)} (${n})`])}
+              onChange={(v) => set({ kind: v })}
+            />
+            {companies.length > 0 && (
               <Select
-                label="Any decade"
-                value={f.decade ? String(f.decade) : null}
-                options={decades.map(([d, n]) => [d, `${d}s (${n})`])}
-                onChange={(v) => set({ decade: v ? Number(v) : null })}
+                label="Any company"
+                value={f.company}
+                options={companies.map(([c, n]) => [c, `${c} (${n})`])}
+                onChange={(v) => set({ company: v })}
               />
-              <Select
-                label="Any kind"
-                value={f.kind}
-                options={kinds.map(([k, n]) => [k, `${pretty(k)} (${n})`])}
-                onChange={(v) => set({ kind: v })}
-              />
-              {companies.length > 0 && (
-                <Select
-                  label="Any company"
-                  value={f.company}
-                  options={companies.map(([c, n]) => [c, `${c} (${n})`])}
-                  onChange={(v) => set({ company: v })}
-                />
-              )}
-            </div>
+            )}
           </div>
         </div>
 

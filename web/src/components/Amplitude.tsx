@@ -21,7 +21,7 @@ const API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
  * Four events, each answering a question worth asking:
  *   page_viewed    — which pages get opened at all
  *   post_opened    — which mistake someone chose from the index
- *   nav_clicked    — does anyone go to about / projects / notes
+ *   nav_clicked    — header / sidebar navigation
  *   outbound_click — does anyone leave for X or GitHub
  *   filter_applied — what people look for in the archive (debounced)
  */
@@ -81,7 +81,6 @@ function kindOf(path: string): string {
   if (path === "/") return "index";
   if (path.startsWith("/mistakes/")) return "mistake";
   if (path.startsWith("/incidents/")) return "incident";
-  if (path.startsWith("/notes/")) return "note";
   return path.replace(/^\//, "") || "index";
 }
 
@@ -132,7 +131,7 @@ function wireClicks(amplitude: Amp) {
         return;
       }
 
-      // Site nav: about / projects / notes / mistakes.
+      // Site nav: header brand and sidebar links.
       const nav = a.dataset.lfmNav;
       if (nav) {
         amplitude.track("nav_clicked", { to: nav, href, label, from_path: from });

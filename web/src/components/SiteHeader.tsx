@@ -1,14 +1,7 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-const NAV = [
-  { href: "/", label: "Archive", key: "archive" },
-  { href: "/projects", label: "Projects", key: "projects" },
-  { href: "/notes", label: "Notes", key: "notes" },
-  { href: "/about", label: "About", key: "about" },
-];
-
-/** Sticky publication bar: mark on the left, nav in the middle, actions right. */
+/** Sticky publication bar: mark on the left, actions right. */
 export function SiteHeader() {
   return (
     <header className="site-header">
@@ -19,14 +12,6 @@ export function SiteHeader() {
           </span>
           <span className="brand-name">Learn From Mistakes</span>
         </Link>
-
-        <nav className="site-nav" aria-label="Main">
-          {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="no-underline" data-lfm-nav={n.key}>
-              {n.label}
-            </Link>
-          ))}
-        </nav>
 
         <div className="site-actions">
           <ThemeToggle />
