@@ -57,6 +57,21 @@ function matches(e: ArchiveEntry, f: Filters): boolean {
   return true;
 }
 
+/** Companies shown first on the home feed, whatever the year. */
+const FAMOUS = new Set([
+  "Google",
+  "Microsoft",
+  "Amazon",
+  "Meta",
+  "Apple",
+  "OpenAI",
+  "Cloudflare",
+  "GitHub",
+  "Twitter",
+  "Slack",
+  "CrowdStrike",
+]);
+
 const pretty = (v: string) => v.replace(/-/g, " ");
 
 function Select({
@@ -151,12 +166,17 @@ export function ArchiveFilter({
   if (f.company) pills.push({ label: f.company, clear: () => set({ company: null }) });
   if (f.q) pills.push({ label: `“${f.q}”`, clear: () => set({ q: "" }) });
 
-  // Group by year; entries are already newest-first.
-  const groups: Array<{ year: number; items: ArchiveEntry[] }> = [];
-  for (const e of shown) {
+  // Household-name companies lead the feed regardless of year; everyone else
+  // follows, grouped by year. Both parts stay newest-first.
+  const big = shown.filter((e) => FAMOUS.has(e.company));
+  const rest = shown.filter((e) => !FAMOUS.has(e.company));
+  const ordered = [...big, ...rest];
+  const groups: Array<{ key: string; label: string; items: ArchiveEntry[] }> = [];
+  if (big.length) groups.push({ key: "big", label: "Big names", items: big });
+  for (const e of rest) {
     const last = groups[groups.length - 1];
-    if (last && last.year === e.year) last.items.push(e);
-    else groups.push({ year: e.year, items: [e] });
+    if (last && last.key === String(e.year)) last.items.push(e);
+    else groups.push({ key: String(e.year), label: String(e.year), items: [e] });
   }
 
   return (
@@ -297,14 +317,14 @@ export function ArchiveFilter({
         </div>
 
         {groups.map((g) => (
-          <section key={g.year} aria-labelledby={`y-${g.year}`}>
-            <h2 id={`y-${g.year}`} className="year-head tnum">
-              {g.year}
+          <section key={g.key} aria-labelledby={`g-${g.key}`}>
+            <h2 id={`g-${g.key}`} className="year-head tnum">
+              {g.label}
             </h2>
             <ol>
               {g.items.map((e) => (
                 <li key={e.href}>
-                  <ArchiveRow entry={e} position={shown.indexOf(e) + 1} />
+                  <ArchiveRow entry={e} position={ordered.indexOf(e) + 1} />
                 </li>
               ))}
             </ol>

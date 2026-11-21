@@ -1,4 +1,5 @@
-import { archive, content } from "@/lib/content";
+import Link from "next/link";
+import { archive, content, formatTimeLost } from "@/lib/content";
 import { ArchiveFilter } from "@/components/ArchiveFilter";
 import { Avatar } from "@/components/Avatar";
 
@@ -6,6 +7,10 @@ export default function Home() {
   const entries = archive();
   const companies = new Set(content.incidents.map((i) => i.company)).size;
   const years = entries.map((e) => e.year).filter(Boolean);
+  const longest = content.incidents
+    .filter((i) => (i.durationMin ?? 0) > 0)
+    .sort((a, b) => (b.durationMin ?? 0) - (a.durationMin ?? 0))
+    .slice(0, 6);
   const span = years.length ? Math.max(...years) - Math.min(...years) + 1 : 0;
 
   return (
@@ -22,28 +27,6 @@ export default function Home() {
       }
     >
       <aside className="sidebar">
-        <div className="author-card">
-          <div className="flex items-center gap-3">
-            <Avatar name="Utsav Rai" size={44} />
-            <div>
-              <p className="font-semibold leading-tight">Utsav Rai</p>
-              <p className="text-[0.82rem] dimmer">Backend engineer</p>
-            </div>
-          </div>
-          <p className="text-[0.9rem]" style={{ color: "var(--ink-2)" }}>
-            I read the postmortems so you don&apos;t have to skim them. Each write-up covers what broke,
-            what the engineers believed, what was really going on, and the rule worth keeping.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            <a href="https://x.com/utsxvrai" target="_blank" rel="noreferrer" className="btn btn-solid no-underline">
-              Follow on X
-            </a>
-            <a href="https://github.com/utsxvrai/lfm" target="_blank" rel="noreferrer" className="btn no-underline">
-              GitHub
-            </a>
-          </div>
-        </div>
-
         <div className="stat-row">
           <div>
             <b className="tnum">{entries.length}</b>
@@ -61,6 +44,31 @@ export default function Home() {
           )}
         </div>
 
+        {longest.length > 0 && (
+          <section aria-labelledby="longest-title">
+            <p id="longest-title" className="side-title">
+              Longest outages
+            </p>
+            <ol className="rank-list">
+              {longest.map((i, n) => (
+                <li key={i.slug}>
+                  <Link href={`/incidents/${i.slug}`} className="rank-item no-underline" data-lfm-nav="sidebar-longest">
+                    <span className="rank-n tnum">{n + 1}</span>
+                    <span className="min-w-0">
+                      <span className="rank-meta">
+                        <Avatar name={i.company} size={16} />
+                        {i.company} · {i.year}
+                      </span>
+                      <span className="rank-title">{i.title}</span>
+                    </span>
+                    <span className="rank-val tnum">{formatTimeLost(i.durationMin)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+            <p className="rank-note">Only incidents whose source states a duration.</p>
+          </section>
+        )}
       </aside>
     </ArchiveFilter>
   );
