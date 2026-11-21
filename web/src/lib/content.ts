@@ -19,6 +19,49 @@ export type Mistake = {
   html: string;
 };
 
+export type Incident = {
+  slug: string;
+  title: string;
+  dek: string;
+  date: string;
+  year: number;
+  company: string;
+  kind: string;
+  topics: string[];
+  stack: string[];
+  durationMin: number | null;
+  impact: string;
+  detectedBy: string | null;
+  rule: string;
+  postmortem: string;
+  sources: string[];
+  readingTime: number;
+  toc: TocEntry[];
+  html: string;
+};
+
+/**
+ * One row of the home archive. Personal mistakes and public incidents share
+ * a list, so this is the common shape the filter works on — no html, so the
+ * client bundle stays small even at a few hundred entries.
+ */
+export type ArchiveEntry = {
+  slug: string;
+  href: string;
+  personal: boolean;
+  num: string | null;
+  title: string;
+  dek: string;
+  date: string;
+  year: number;
+  company: string;
+  kind: string;
+  topics: string[];
+  stack: string[];
+  durationMin: number | null;
+  readingTime: number;
+};
+
 export type Note = {
   slug: string;
   title: string;
@@ -55,6 +98,8 @@ export type Content = {
   generatedAt: string;
   rulePath: string;
   mistakes: Mistake[];
+  incidents: Incident[];
+  vocab: { kinds: string[]; topics: string[] };
   notes: Note[];
   projects: Project[];
   pages: { about: Page | null; resume: Page | null };
@@ -67,6 +112,53 @@ export const content = generated as Content;
 
 export const allMistakes = (): Mistake[] => content.mistakes;
 export const mistakeBySlug = (slug: string) => content.mistakes.find((m) => m.slug === slug);
+
+export const allIncidents = (): Incident[] => content.incidents;
+export const incidentBySlug = (slug: string) => content.incidents.find((i) => i.slug === slug);
+
+/** Neighbours by date for prev/next links on an incident page (list is newest-first). */
+export function incidentNeighbours(slug: string): { newer: Incident | null; older: Incident | null } {
+  const list = content.incidents;
+  const i = list.findIndex((x) => x.slug === slug);
+  return { newer: list[i - 1] ?? null, older: list[i + 1] ?? null };
+}
+
+/** Personal mistakes and public incidents merged into one newest-first list. */
+export function archive(): ArchiveEntry[] {
+  const personal: ArchiveEntry[] = content.mistakes.map((m) => ({
+    slug: m.slug,
+    href: `/mistakes/${m.slug}`,
+    personal: true,
+    num: m.num,
+    title: m.title,
+    dek: m.dek,
+    date: m.date ?? "",
+    year: Number((m.date ?? "0").slice(0, 4)),
+    company: "me",
+    kind: "outage",
+    topics: m.rootCause ? [m.rootCause] : [],
+    stack: m.stack,
+    durationMin: m.timeLost,
+    readingTime: m.readingTime,
+  }));
+  const publicOnes: ArchiveEntry[] = content.incidents.map((i) => ({
+    slug: i.slug,
+    href: `/incidents/${i.slug}`,
+    personal: false,
+    num: null,
+    title: i.title,
+    dek: i.dek,
+    date: i.date,
+    year: i.year,
+    company: i.company,
+    kind: i.kind,
+    topics: i.topics,
+    stack: i.stack,
+    durationMin: i.durationMin,
+    readingTime: i.readingTime,
+  }));
+  return [...personal, ...publicOnes].sort((a, b) => b.date.localeCompare(a.date));
+}
 
 export const allNotes = (): Note[] => content.notes;
 export const noteBySlug = (slug: string) => content.notes.find((n) => n.slug === slug);

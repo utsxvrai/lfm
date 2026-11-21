@@ -1,11 +1,23 @@
 import Link from "next/link";
 import { formatTimeLost, type Mistake } from "@/lib/content";
 
-export function MistakeRow({ post }: { post: Mistake }) {
+/**
+ * `data-lfm-post*` is what the analytics click handler reads. Tracking hangs
+ * off these attributes rather than off href patterns, so changing a URL can't
+ * silently break the numbers.
+ */
+export function MistakeRow({ post, position }: { post: Mistake; position?: number }) {
   const time = formatTimeLost(post.timeLost);
 
   return (
-    <Link href={`/mistakes/${post.slug}`} className="group block py-8 no-underline">
+    <Link
+      href={`/mistakes/${post.slug}`}
+      className="group block py-8 no-underline"
+      data-lfm-post={post.slug}
+      data-lfm-post-num={post.num}
+      data-lfm-post-title={post.title}
+      data-lfm-post-pos={position}
+    >
       <div className="hand flex items-baseline gap-3 text-[15px]">
         <span className="tnum" style={{ color: "var(--accent)" }}>
           #{post.num}

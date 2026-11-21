@@ -2,7 +2,8 @@
  * Reads every markdown collection in the repo root and emits a single typed
  * JSON blob the Next app imports at build time.
  *
- *   posts/     -> mistakes   (the LFM series)
+ *   posts/     -> mistakes   (my own production mistakes)
+ *   incidents/ -> incidents  (public failures at other companies, sourced)
  *   notes/     -> notes      (shorter writing that isn't a mistake post)
  *   projects/  -> projects   (what I've built)
  *   about.md, resume.md      (standalone pages)
@@ -177,6 +178,53 @@ const mistakes = collection("posts", ({ slug, data, html, toc, readingTime: rt }
   };
 }).sort((a, b) => b.id - a.id);
 
+/**
+ * Public incidents at other companies — the archive half of the site. Every
+ * entry must point at its sources; an incident without a postmortem link or
+ * with a topic outside the vocabulary fails the build instead of shipping.
+ */
+const KINDS = ["outage", "security-breach", "data-loss", "financial-loss", "bug"];
+const TOPICS = [
+  "config-change", "deploy", "dns", "bgp", "networking", "database", "replication",
+  "backup", "certificate", "auth", "capacity", "cascading-failure", "dependency",
+  "human-error", "automation", "security", "data-leak", "regex", "time-handling",
+  "cache", "storage", "monitoring", "rollback", "software-bug", "hardware",
+  "power-cooling", "supply-chain", "ddos", "migration",
+];
+
+const incidents = collection("incidents", ({ slug, data, html, toc, readingTime: rt }) => {
+  const where = `incidents/${slug}.md`;
+  for (const key of ["date", "company", "kind", "postmortem"]) {
+    if (data[key] == null) throw new Error(`${where}: missing "${key}" in frontmatter`);
+  }
+  if (!KINDS.includes(data.kind)) throw new Error(`${where}: unknown kind "${data.kind}"`);
+  const topics = Array.isArray(data.topics) ? data.topics : [];
+  for (const t of topics) {
+    if (!TOPICS.includes(t)) throw new Error(`${where}: unknown topic "${t}"`);
+  }
+  const date = String(data.date);
+  return {
+    slug,
+    title: data.title,
+    dek: data.dek ?? "",
+    date,
+    year: Number(date.slice(0, 4)),
+    company: data.company,
+    kind: data.kind,
+    topics,
+    stack: Array.isArray(data.stack) ? data.stack : [],
+    durationMin: data.duration_min ?? null,
+    impact: data.impact ?? "",
+    detectedBy: data.detected_by ?? null,
+    rule: data.rule ?? "",
+    postmortem: data.postmortem,
+    sources: Array.isArray(data.sources) ? data.sources : [],
+    readingTime: rt,
+    toc,
+    html,
+  };
+}).sort((a, b) => b.date.localeCompare(a.date));
+
 const notes = collection("notes", ({ slug, data, html, toc, readingTime: rt }) => ({
   slug,
   title: data.title,
@@ -205,6 +253,8 @@ const content = {
   generatedAt: new Date().toISOString(),
   rulePath: sketchRulePath(),
   mistakes,
+  incidents,
+  vocab: { kinds: KINDS, topics: TOPICS },
   notes,
   projects,
   pages: {
@@ -217,6 +267,6 @@ const content = {
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, JSON.stringify(content, null, 2));
 console.log(
-  `synced ${mistakes.length} mistake(s), ${notes.length} note(s), ` +
+  `synced ${mistakes.length} mistake(s), ${incidents.length} incident(s), ${notes.length} note(s), ` +
     `${projects.length} project(s) -> src/content.generated.json`,
 );

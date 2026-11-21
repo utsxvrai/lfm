@@ -8,33 +8,47 @@ const API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
 /**
  * Behavioural analytics, loaded only when a key is configured.
  *
- * The SDK is the heaviest thing on an otherwise static page, so it's imported
- * dynamically *after* first paint — the article renders and becomes readable
- * before any analytics code is fetched. With no key set this component costs
- * one `if` and ships nothing.
+ * There is no login here, so Amplitude identifies visitors by a random
+ * deviceId in localStorage. That counts distinct browsers, not distinct
+ * people — same person on phone and laptop is two, and clearing storage
+ * makes a third. Fine for relative comparisons, wrong for headcount.
  *
- * Pageviews alone don't say much for a blog. The question worth answering is
- * "did anyone actually read it", so this also tracks scroll depth, time on
- * page, and clicks that leave the site.
+ * The SDK is the heaviest thing on an otherwise static page, so it is
+ * imported dynamically after first paint: the article renders and becomes
+ * readable before any analytics code is fetched. With no key set, this
+ * component costs one `if` and ships nothing.
+ *
+ * Four events, each answering a question worth asking:
+ *   page_viewed    — which pages get opened at all
+ *   post_opened    — which mistake someone chose from the index
+ *   nav_clicked    — does anyone go to about / projects / notes
+ *   outbound_click — does anyone leave for X or GitHub
+ *   filter_applied — what people look for in the archive (debounced)
  */
 export function Amplitude() {
   const pathname = usePathname();
-  const started = useRef(false);
+  const wired = useRef(false);
 
   useEffect(() => {
-    if (!API_KEY || started.current) return;
-    started.current = true;
+    if (!API_KEY || wired.current) return;
+    wired.current = true;
 
     let cancelled = false;
-
     import("@amplitude/analytics-browser").then((amplitude) => {
       if (cancelled) return;
       amplitude.init(API_KEY, {
-        // No login on this site, so there's nobody to identify. Device-scoped
-        // only, and no marketing/session-replay extras.
-        defaultTracking: { attribution: true, pageViews: false, sessions: true, formInteractions: false, fileDownloads: false },
+        // Nobody to identify, so device-scoped only. Attribution is on so the
+        // referrer that brought someone in survives onto later events.
+        defaultTracking: {
+          attribution: true,
+          pageViews: false,
+          sessions: true,
+          formInteractions: false,
+          fileDownloads: false,
+        },
       });
-      wire(amplitude);
+      wireClicks(amplitude);
+      wireFilters(amplitude);
     });
 
     return () => {
@@ -42,11 +56,11 @@ export function Amplitude() {
     };
   }, []);
 
-  /* A new route is a new "page" — reset the depth marks and log the view. */
+  /* A route change is a new page view — including client-side navigations,
+     which don't reload the document and so fire nothing on their own. */
   useEffect(() => {
     if (!API_KEY) return;
     import("@amplitude/analytics-browser").then((amplitude) => {
-      resetMarks();
       amplitude.track("page_viewed", {
         path: pathname,
         kind: kindOf(pathname),
@@ -62,81 +76,81 @@ export function Amplitude() {
 
 type Amp = typeof import("@amplitude/analytics-browser");
 
-const DEPTHS = [25, 50, 75, 100] as const;
-let hitDepths = new Set<number>();
-let arrivedAt = Date.now();
-
-function resetMarks() {
-  hitDepths = new Set();
-  arrivedAt = Date.now();
-}
-
-/** /mistakes/001-x -> "mistake". Lets one funnel span every post. */
+/** /mistakes/001-x -> "mistake", so one chart can span every post. */
 function kindOf(path: string): string {
   if (path === "/") return "index";
   if (path.startsWith("/mistakes/")) return "mistake";
+  if (path.startsWith("/incidents/")) return "incident";
   if (path.startsWith("/notes/")) return "note";
   return path.replace(/^\//, "") || "index";
 }
 
-function wire(amplitude: Amp) {
-  let ticking = false;
+/**
+ * One delegated listener for every link on the site. Capture phase, so it runs
+ * before Next's router swallows the click on internal navigations.
+ *
+ * Links carry `data-lfm-*` attributes rather than being matched by href
+ * patterns here — that keeps the tracking correct when URLs change.
+ */
+function wireClicks(amplitude: Amp) {
+  document.addEventListener(
+    "click",
+    (e) => {
+      const a = (e.target as HTMLElement | null)?.closest?.("a");
+      if (!a) return;
 
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      ticking = false;
-      const doc = document.documentElement;
-      const scrollable = doc.scrollHeight - window.innerHeight;
-      if (scrollable <= 0) return;
-      const pct = Math.round((window.scrollY / scrollable) * 100);
+      const href = a.getAttribute("href") ?? "";
+      if (!href) return;
 
-      for (const d of DEPTHS) {
-        if (pct >= d && !hitDepths.has(d)) {
-          hitDepths.add(d);
-          amplitude.track("scroll_depth_reached", {
-            depth: d,
-            path: location.pathname,
-            kind: kindOf(location.pathname),
-            seconds: Math.round((Date.now() - arrivedAt) / 1000),
-          });
+      const from = location.pathname;
+      const label = (a.textContent ?? "").trim().slice(0, 80);
+
+      // Leaving the site — X, GitHub, LinkedIn. The closest thing to a
+      // conversion this site has.
+      if (/^https?:\/\//.test(href)) {
+        let host = "";
+        try {
+          host = new URL(href).host;
+        } catch {
+          return;
         }
+        if (host === location.host) return;
+        amplitude.track("outbound_click", { host, href, label, from_path: from });
+        return;
       }
-    });
-  };
 
-  // Outbound clicks — X, GitHub, anything off-site. This is the closest thing
-  // to a conversion the site has.
-  const onClick = (e: MouseEvent) => {
-    const el = (e.target as HTMLElement | null)?.closest?.("a");
-    if (!el) return;
-    const href = el.getAttribute("href") ?? "";
-    if (!/^https?:\/\//.test(href)) return;
-    if (new URL(href).host === location.host) return;
-    amplitude.track("outbound_click", {
-      href,
-      host: new URL(href).host,
-      path: location.pathname,
-      text: (el.textContent ?? "").trim().slice(0, 60),
-    });
-  };
+      // Opening a specific mistake from a list.
+      const postSlug = a.dataset.lfmPost;
+      if (postSlug) {
+        amplitude.track("post_opened", {
+          slug: postSlug,
+          num: a.dataset.lfmPostNum ?? null,
+          title: a.dataset.lfmPostTitle ?? null,
+          position: a.dataset.lfmPostPos ? Number(a.dataset.lfmPostPos) : null,
+          from_path: from,
+        });
+        return;
+      }
 
-  // One summary event per visit, sent on the way out. `visibilitychange` is
-  // used rather than `unload` because mobile browsers frequently never fire
-  // `unload` at all.
-  const onHide = () => {
-    if (document.visibilityState !== "hidden") return;
-    amplitude.track("page_left", {
-      path: location.pathname,
-      kind: kindOf(location.pathname),
-      seconds: Math.round((Date.now() - arrivedAt) / 1000),
-      max_depth: hitDepths.size ? Math.max(...hitDepths) : 0,
-    });
-    amplitude.flush();
-  };
+      // Site nav: about / projects / notes / mistakes.
+      const nav = a.dataset.lfmNav;
+      if (nav) {
+        amplitude.track("nav_clicked", { to: nav, href, label, from_path: from });
+      }
+    },
+    true,
+  );
+}
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  document.addEventListener("click", onClick, true);
-  document.addEventListener("visibilitychange", onHide);
+/**
+ * The archive filter dispatches `lfm:filter` (already debounced) rather than
+ * importing the SDK itself, so the filter stays analytics-free.
+ */
+function wireFilters(amplitude: Amp) {
+  window.addEventListener("lfm:filter", (e) => {
+    const f = (e as CustomEvent<Record<string, unknown>>).detail;
+    const set = Object.entries(f).filter(([, v]) => v !== null && v !== "" && v !== false);
+    if (set.length === 0) return;
+    amplitude.track("filter_applied", Object.fromEntries(set));
+  });
 }

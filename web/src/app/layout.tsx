@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, Kalam } from "next/font/google";
+import { Source_Serif_4, Inter } from "next/font/google";
 import "./globals.css";
-import { SiteRail } from "@/components/SiteRail";
+import { SiteHeader } from "@/components/SiteHeader";
 import { Analytics } from "@vercel/analytics/next";
 import { Amplitude } from "@/components/Amplitude";
 
@@ -11,12 +11,11 @@ const serif = Source_Serif_4({
   variable: "--font-serif",
 });
 
-/** Diagram labels, headings and marginalia — the "drawn on an iPad" voice. */
-const hand = Kalam({
+/** UI, headings, titles and diagram labels. The serif is kept for reading. */
+const sans = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "700"],
   display: "swap",
-  variable: "--font-hand",
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s — Learn From Mistakes",
   },
   description:
-    "Real backend engineering mistakes, one at a time. What broke, what I wrongly believed, what was actually happening, and the rule I follow now.",
+    "The biggest production failures of the last twenty years, explained from their postmortems: what broke, what engineers believed, what was actually happening, and the lesson.",
   openGraph: {
     type: "website",
     siteName: "Learn From Mistakes",
@@ -43,15 +42,13 @@ const THEME_BOOT = `try{var t=localStorage.getItem('theme');if(t)document.docume
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${serif.variable} ${hand.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${serif.variable} ${sans.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
       </head>
       <body>
-        <div className="shell">
-          <SiteRail />
-          <main className="col-main">{children}</main>
-        </div>
+        <SiteHeader />
+        <main className="shell">{children}</main>
         {/* Traffic (free on Hobby, ~1KB). Amplitude adds behaviour on top and
             only loads when NEXT_PUBLIC_AMPLITUDE_API_KEY is set. */}
         <Analytics />

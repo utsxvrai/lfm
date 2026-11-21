@@ -1,75 +1,88 @@
 import Link from "next/link";
-import { allMistakes, content, formatTimeLost, byRootCause } from "@/lib/content";
-import { SketchRule } from "@/components/SketchRule";
-import { MistakeRow } from "@/components/MistakeRow";
+import { archive, content } from "@/lib/content";
+import { ArchiveFilter } from "@/components/ArchiveFilter";
+import { Avatar } from "@/components/Avatar";
 
 export default function Home() {
-  const posts = allMistakes();
-  const totalLost = formatTimeLost(content.totalTimeLost);
-  const causes = byRootCause();
+  const entries = archive();
+  const companies = new Set(content.incidents.map((i) => i.company)).size;
+  const years = entries.map((e) => e.year).filter(Boolean);
+  const span = years.length ? Math.max(...years) - Math.min(...years) + 1 : 0;
+
+  const topicCounts = new Map<string, number>();
+  for (const e of entries) for (const t of e.topics) topicCounts.set(t, (topicCounts.get(t) ?? 0) + 1);
+  const topTopics = [...topicCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
 
   return (
-    <div className="wrap">
-      <section className="pt-12 pb-8 sm:pt-16">
-        <h1 className="hand text-[2.4rem] sm:text-[3rem] font-bold leading-[1.08]">
-          Learn From Mistakes
-        </h1>
-
-        <p className="mt-6 text-[1.08rem]" style={{ color: "var(--ink-2)" }}>
-          Not tutorials. Each post is one thing I got wrong in production: what broke, what I
-          wrongly believed, what was actually happening underneath, and the rule I follow now.
-          One a week.
-        </p>
-
-        <p className="mt-4 text-[1rem] dimmer">
-          By{" "}
-          <Link href="/about" style={{ color: "var(--accent)" }} className="underline underline-offset-2">
-            Utsav Rai
-          </Link>
-          , backend dev building production agentic AI in Node/TS. Most engineering writing
-          shows the finished thing and skips the six hours someone spent believing something
-          false. That gap is the useful part.
-        </p>
-
-        <div className="mt-6 flex flex-wrap items-center gap-1.5">
-          <span className="chip tnum">
-            {posts.length} {posts.length === 1 ? "mistake" : "mistakes"}
-          </span>
-          {totalLost && <span className="chip chip-accent tnum">{totalLost} lost</span>}
-          {causes.slice(0, 3).map((c) => (
-            <span key={c.cause} className="chip">
-              {c.cause} × {c.count}
-            </span>
-          ))}
+    <ArchiveFilter
+      entries={entries}
+      header={
+        <section className="feed-head pt-12 sm:pt-14">
+          <h1>Learn From Mistakes</h1>
+          <p className="mt-3 text-[1.05rem] dimmer" style={{ maxWidth: "36rem" }}>
+            The biggest things that ever broke in production, explained properly — rebuilt from each
+            company&apos;s own postmortem, with every claim linked to its source.
+          </p>
+        </section>
+      }
+    >
+      <aside className="sidebar">
+        <div className="author-card">
+          <div className="flex items-center gap-3">
+            <Avatar name="Utsav Rai" size={44} />
+            <div>
+              <p className="font-semibold leading-tight">Utsav Rai</p>
+              <p className="text-[0.82rem] dimmer">Backend engineer</p>
+            </div>
+          </div>
+          <p className="text-[0.9rem]" style={{ color: "var(--ink-2)" }}>
+            I read the postmortems so you don&apos;t have to skim them. Each write-up covers what broke,
+            what the engineers believed, what was really going on, and the rule worth keeping. My own
+            production mistakes are in here too.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <a href="https://x.com/utsxvrai" target="_blank" rel="noreferrer" className="btn btn-solid no-underline">
+              Follow on X
+            </a>
+            <a href="https://github.com/utsxvrai/lfm" target="_blank" rel="noreferrer" className="btn no-underline">
+              GitHub
+            </a>
+            <Link href="/about" className="btn no-underline" data-lfm-nav="about-sidebar">
+              About
+            </Link>
+          </div>
         </div>
-      </section>
 
-      <SketchRule />
+        <div className="stat-row">
+          <div>
+            <b className="tnum">{entries.length}</b>
+            <span>stories</span>
+          </div>
+          <div>
+            <b className="tnum">{companies}</b>
+            <span>companies</span>
+          </div>
+          {span > 0 && (
+            <div>
+              <b className="tnum">{span}</b>
+              <span>years</span>
+            </div>
+          )}
+        </div>
 
-      <ol>
-        {posts.map((post, i) => (
-          <li key={post.slug}>
-            {i > 0 && <SketchRule className="opacity-60" />}
-            <MistakeRow post={post} />
-          </li>
-        ))}
-      </ol>
-
-      {posts.length === 0 && <p className="py-16 text-center dimmer hand">Nothing broken yet.</p>}
-
-      <SketchRule />
-
-      <footer className="hand flex flex-wrap items-center justify-between gap-3 py-6 text-[15px] dimmer">
-        <span>one mistake a week</span>
-        <a
-          href="https://github.com/utsxvrai/lfm"
-          target="_blank"
-          rel="noreferrer"
-          className="no-underline hover:underline"
-        >
-          source on github
-        </a>
-      </footer>
-    </div>
+        {topTopics.length > 0 && (
+          <div>
+            <p className="side-title">Explore topics</p>
+            <div className="flex flex-wrap gap-2">
+              {topTopics.map(([t]) => (
+                <a key={t} href={`/?topic=${encodeURIComponent(t)}`} className="chip no-underline">
+                  {t}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </aside>
+    </ArchiveFilter>
   );
 }
