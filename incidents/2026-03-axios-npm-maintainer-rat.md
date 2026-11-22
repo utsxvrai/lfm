@@ -1,6 +1,7 @@
 ---
 title: "A fake Teams call put a RAT on the axios maintainer's laptop and two backdoored releases on npm"
 dek: "Attackers used a cloned company, a real Slack workspace and a fake Teams meeting to get axios's lead maintainer to install what looked like a Teams update. From his machine they published axios 1.14.1 and 0.30.4 with one extra dependency whose postinstall hook dropped a cross-platform backdoor. 2FA was on. It didn't matter."
+belief: "axios's maintainer trusted 2FA to protect npm publishing. A RAT on the maintainer's laptop published for them."
 date: 2026-03-31
 company: axios
 kind: security-breach

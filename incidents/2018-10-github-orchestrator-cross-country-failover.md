@@ -1,6 +1,7 @@
 ---
 title: "43 seconds of lost connectivity sent GitHub's MySQL primaries across the country and cost 24 hours"
 dek: "A brief network partition let Orchestrator's Raft quorum promote West Coast MySQL primaries. East Coast had a few seconds of writes the West never saw, so GitHub could not simply fail back, and chose a day of degraded service over losing data."
+belief: "GitHub never expected MySQL failover to cross the country. A 43-second network partition moved its primaries West."
 date: 2018-10-21
 company: GitHub
 kind: outage

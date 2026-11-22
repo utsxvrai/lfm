@@ -1,6 +1,7 @@
 ---
 title: "Log4Shell: logging a string could make a Java server load and run code from an attacker's LDAP server"
 dek: "Log4j 2 expanded lookup expressions inside log messages, and one of those lookups was JNDI, which can fetch and run Java code from a remote server. Any application that logged attacker-controlled text, such as a header or a username, could be made to execute arbitrary code. CVSS 10."
+belief: "Developers thought logging a string was safe. Log4j could turn it into a JNDI lookup that ran remote code."
 date: 2021-12
 company: Apache
 kind: security-breach

@@ -1,6 +1,7 @@
 ---
 title: "Wikipedia's datacenter overheated, and the DNS failover meant to save it broke resolution worldwide"
 dek: "Servers in Wikimedia's European datacenter shut down from heat. Moving traffic to Florida meant changing DNS, the failover mechanism turned out to be broken, and resolvers that ignored the one-hour negative-cache TTL kept the outage going after it was fixed."
+belief: "Wikimedia trusted its DNS failover. It was broken, and ISP resolvers kept the outage going after the fix."
 date: 2010-03-24
 company: Wikimedia
 kind: outage

@@ -1,6 +1,7 @@
 ---
 title: "A Vercel employee's AI tool was breached, and the attacker walked through its OAuth grant into Vercel"
 dek: "Context.ai, a third-party AI app an employee had connected to their Google Workspace account, was compromised. The attacker used it to take over the employee's Google account, then their Vercel account, then moved through internal systems and read customers' environment variables that weren't marked sensitive."
+belief: "Vercel trusted an AI app's OAuth access to an employee's Google account. Its breach reached customer env vars."
 date: 2026-04-19
 company: Vercel
 kind: security-breach

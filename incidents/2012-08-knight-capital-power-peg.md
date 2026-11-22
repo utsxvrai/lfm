@@ -1,6 +1,7 @@
 ---
 title: "Knight Capital lost $460 million in 45 minutes because one of eight servers missed a deploy"
 dek: "New code reused an old flag. Seven servers read it as the new feature. The eighth still had 'Power Peg' code, unused since 2003, that read it as 'keep buying', and nothing downstream could stop it."
+belief: "Knight Capital thought its deploy reached all eight servers. One still ran old code that kept buying."
 date: 2012-08-01
 company: Knight Capital
 kind: financial-loss

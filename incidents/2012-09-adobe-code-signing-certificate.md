@@ -1,6 +1,7 @@
 ---
 title: "Attackers got Adobe to sign their malware without ever touching Adobe's private key"
 dek: "Adobe's signing keys sat in hardware security modules, behind mutually authenticated TLS and IP allow-lists. None of that mattered once attackers controlled a build server that was allowed to ask for signatures. Adobe had to revoke the certificate."
+belief: "Adobe thought HSMs kept its code signing key safe. A compromised build server got malware signed anyway."
 date: 2012-09-27
 company: Adobe
 kind: security-breach

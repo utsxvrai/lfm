@@ -1,6 +1,7 @@
 ---
 title: "Sidekick users lost their contacts when Danger's core database and its backup failed together"
 dek: "T-Mobile Sidekick data lived in Microsoft-Danger's service. A system failure hit the core database and the backup at once, phones lost personal data, and recovery meant rebuilding the system component by component over more than two weeks."
+belief: "Microsoft-Danger counted on a backup of the Sidekick database. The database and the backup failed together."
 date: 2009-10-02
 company: Microsoft
 kind: data-loss

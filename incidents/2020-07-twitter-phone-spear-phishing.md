@@ -1,6 +1,7 @@
 ---
 title: "Phone calls about the VPN gave attackers Twitter's account-takeover tools"
 dek: "Attackers posing as IT support sent employees to a lookalike VPN login page, replayed the credentials live and got them to approve the push MFA prompt. From inside, they found the people with admin tools and took over 130 accounts, including Obama's, Musk's and Apple's."
+belief: "Twitter thought push MFA protected its admin tools. After phone pretexts, employees approved the attackers' logins."
 date: 2020-07-15
 company: Twitter
 kind: security-breach

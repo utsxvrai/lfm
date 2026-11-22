@@ -1,6 +1,7 @@
 ---
 title: "Cloudbleed: one missing p-- leaked private memory into Cloudflare's HTML responses"
 dek: "A years-old Ragel parser bug let a pointer jump past the end of a buffer. It stayed harmless until a new parser changed how NGINX handed over the final buffer, and then cookies, tokens and POST bodies started appearing in other sites' pages."
+belief: "Cloudflare thought the risk was in its new HTML parser. The memory leak bug was in the old one."
 date: 2017-02-17
 company: Cloudflare
 kind: security-breach

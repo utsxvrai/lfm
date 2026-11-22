@@ -1,6 +1,7 @@
 ---
 title: "The 2016 leap second made time go backwards inside Cloudflare's DNS"
 dek: "A Go service measured resolver latency with time.Now(), which isn't monotonic. At midnight UTC a duration came out negative, a smoothed average went below zero, and rand.Int63n panicked."
+belief: "Cloudflare's DNS code assumed time can't go backwards. A leap second made a duration negative and Go panicked."
 date: 2017-01-01
 company: Cloudflare
 kind: outage

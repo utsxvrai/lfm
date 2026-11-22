@@ -1,6 +1,7 @@
 ---
 title: "A config change woke a dormant bug and Google Cloud's load balancers returned 502s for 32 minutes"
 dek: "A feature that was compiled into Google Front End but not yet in service had a crash bug. A production configuration change triggered it intermittently, second-tier GFEs restarted over and over, and the capacity lost to restarts became 502s for customers."
+belief: "Google Cloud treated a not-yet-enabled load balancer feature as inert. A config change made it crash: 502s."
 date: 2018-07-17
 company: Google
 kind: outage

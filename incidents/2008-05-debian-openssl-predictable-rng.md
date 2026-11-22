@@ -1,6 +1,7 @@
 ---
 title: "Debian silenced a Valgrind warning and made every OpenSSL key guessable for 20 months"
 dek: "Removing one line that fed uninitialised memory into OpenSSL's random pool looked like harmless cleanup. An identical-looking line was the one that fed in the real entropy, and without it the generator was seeded by little more than the process ID."
+belief: "Debian thought removing an OpenSSL line Valgrind flagged was harmless. It made generated keys guessable."
 date: 2008-05-13
 company: Debian
 kind: bug

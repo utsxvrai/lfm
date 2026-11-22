@@ -1,6 +1,7 @@
 ---
 title: "One router command made every router in Microsoft's WAN recompute its routes"
 dek: "An engineer adding capacity in Madrid ran a command to purge the IGP database. On that router model it didn't stay local: it told every router in the WAN to recompute its topology, and Azure and Microsoft 365 lost connectivity in waves."
+belief: "Microsoft thought its engineer was touching one router. One command made every WAN router recompute routes."
 date: 2023-01-25
 company: Microsoft
 kind: outage

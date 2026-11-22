@@ -1,6 +1,7 @@
 ---
 title: "One added line in Codecov's Bash Uploader sent CI secrets to an attacker from January to April"
 dek: "A credential leaked through Codecov's Docker image build let an attacker edit the Bash Uploader that customers' CI pipelines download and run. One added curl line posted every environment variable to the attacker's server, silently, until a customer compared checksums."
+belief: "CI pipelines ran Codecov's Bash Uploader straight from its URL. One added line sent their secrets out."
 date: 2021-01-31
 company: Codecov
 kind: security-breach

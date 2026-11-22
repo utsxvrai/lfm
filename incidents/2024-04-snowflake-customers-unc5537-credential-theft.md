@@ -1,6 +1,7 @@
 ---
 title: "Old infostealer passwords and no MFA let UNC5537 empty Snowflake customer accounts"
 dek: "Nobody broke into Snowflake. A financially motivated group logged into customer accounts with usernames and passwords stolen by infostealer malware, some dating back to 2020, on accounts with no MFA and no network allow list, then used Snowflake's own staging commands to export the data."
+belief: "Snowflake customers thought old, unabused passwords were safe. Stolen logins with no MFA exported their data."
 date: 2024-04
 company: Snowflake
 kind: security-breach

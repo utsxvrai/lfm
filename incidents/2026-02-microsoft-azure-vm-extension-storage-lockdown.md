@@ -1,6 +1,7 @@
 ---
 title: "A security clean-up job locked Azure out of its own VM extension storage, then recovery overloaded Managed Identity"
 dek: "A remediation workflow that disables anonymous access on storage accounts was pointed, by a targeting bug, at the Microsoft-managed accounts that serve VM extension packages. VMs couldn't be created or scaled in many regions. When access came back, the backlog of blocked work and its retries overwhelmed Managed Identities in East US and West US."
+belief: "Azure's anonymous-access clean-up was meant for accounts open by mistake. It locked VMs out of extension storage."
 date: 2026-02-02
 company: Microsoft
 kind: outage

@@ -1,6 +1,7 @@
 ---
 title: "Anyone could initialise Parity's shared wallet library, so someone did and then killed it"
 dek: "Every Parity multi-sig wallet deployed after July 20, 2017 forwarded its logic to one shared library contract. That library had never been initialised, so a user made himself its owner, called its self-destruct, and froze 587 wallets."
+belief: "Parity treated its shared multisig library as code, not a wallet. Anyone could take ownership and kill it."
 date: 2017-11-06
 company: Parity
 kind: financial-loss

@@ -1,6 +1,7 @@
 ---
 title: "Meltdown and Spectre: CPUs leaked privileged memory through work they were going to throw away"
 dek: "Modern processors execute ahead of bounds checks and permission checks, then discard the results if they guessed wrong. Project Zero and academic teams showed the discarded work still leaves footprints in the cache, and that timing those footprints reads memory across security boundaries."
+belief: "CPU designers assumed speculative execution had no visible effects. It leaked memory through the cache."
 date: 2018-01-03
 company: Multiple vendors
 kind: security-breach

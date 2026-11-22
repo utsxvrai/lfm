@@ -1,6 +1,7 @@
 ---
 title: "Rogers deleted a route filter during cleanup and 900,000 routes crashed its core, cutting 12 million Canadians off"
 dek: "As part of a phased core-network upgrade, staff removed an Access Control List policy filter from distribution routers. Without it, one router pushed over 900,000 routes into core routers that normally saw about 10,000, and the core routers, with no overload limit configured, crashed within minutes. Wireless, wireline and 9-1-1 shared that core."
+belief: "Rogers rated removing a route filter as low risk. Without it, a route flood crashed its core network."
 date: 2022-07-08
 company: Rogers
 kind: outage

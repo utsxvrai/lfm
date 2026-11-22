@@ -1,6 +1,7 @@
 ---
 title: "NotPetya wiped Maersk's network, and its domain controllers survived only in Ghana"
 dek: "Malware delivered through a Ukrainian accounting app spread across Maersk's flat global network with EternalBlue and stolen credentials. Domain controllers that replicated to each other turned out to be no backup when every one was wiped at once."
+belief: "Maersk thought its synced domain controllers backed each other up. NotPetya wiped every connected one."
 date: 2017-06-27
 company: Maersk
 kind: security-breach

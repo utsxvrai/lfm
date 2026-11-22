@@ -1,6 +1,7 @@
 ---
 title: "Windows Azure's leap-day bug: year + 1 produced February 29, 2013"
 dek: "Azure's guest agent set certificate expiry by adding one to the year. On leap day that made a date that doesn't exist, VMs failed to start, and the platform decided the hardware was broken. A rushed fix then took networking away from seven clusters."
+belief: "Azure assumed a year from today meant year + 1. Leap day made it February 29, 2013, and VMs failed."
 date: 2012-02-29
 company: Microsoft
 kind: outage

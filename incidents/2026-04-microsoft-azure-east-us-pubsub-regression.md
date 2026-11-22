@@ -1,6 +1,7 @@
 ---
 title: "A latent regression made Azure East US's networking control plane too slow to fail over or roll back"
 dek: "Lock contention in one partition of Azure's PubSub service should have triggered a routine failover. A recently deployed version had made replica builds slow in East US's large zones, so the failover failed, the rollback crawled through update domains, and impact moved between availability zones."
+belief: "Microsoft thought an Azure PubSub update was proven elsewhere. A latent regression broke failover and slowed rollback."
 date: 2026-04-24
 company: Microsoft
 kind: outage

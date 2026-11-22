@@ -1,6 +1,7 @@
 ---
 title: "Foursquare's 11-hour outage: adding a shard to an overloaded one took the site down"
 dek: "One database shard was getting too many check-ins. Foursquare added a new shard to take load off it, and the site went down. Moving the data didn't free the memory they expected, because of fragmentation."
+belief: "Foursquare thought it could add a shard with the site up. The overloaded shard took the site down."
 date: 2010-10-04
 company: Foursquare
 kind: outage

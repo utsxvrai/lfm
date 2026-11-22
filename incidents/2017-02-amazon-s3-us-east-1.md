@@ -1,6 +1,7 @@
 ---
 title: "A mistyped input to a capacity-removal command took S3 offline in us-east-1"
 dek: "Debugging a slow billing system, an S3 engineer ran a playbook command with one wrong input and removed the servers behind S3's index and placement subsystems. Restarting them took hours, because nobody had done a full restart at that scale for years."
+belief: "AWS thought removing S3 capacity was routine and safe. One wrong input took S3 down in us-east-1."
 date: 2017-02-28
 company: Amazon
 kind: outage

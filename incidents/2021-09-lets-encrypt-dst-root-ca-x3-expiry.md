@@ -1,6 +1,7 @@
 ---
 title: "Let's Encrypt's old root expired on schedule and old clients stopped trusting it"
 dek: "The DST Root CA X3 cross-sign that made Let's Encrypt trusted everywhere expired exactly as planned on 30 September 2021. Devices that never learned the newer ISRG Root X1 started failing, and OpenSSL 1.0.x clients could fail even when they did trust it, because of how they built the certificate chain."
+belief: "Operators thought a valid Let's Encrypt cert would just work. Old clients broke when DST Root CA X3 expired."
 date: 2021-09-30
 company: Let's Encrypt
 kind: bug

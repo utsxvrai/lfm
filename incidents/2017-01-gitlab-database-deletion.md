@@ -1,6 +1,7 @@
 ---
 title: "GitLab.com deleted its primary database and found its backups didn't work"
 dek: "While rebuilding a broken replica, an engineer wiped the data directory on the wrong host. The pg_dump backups had been failing silently for a version mismatch, and nobody knew because the alert emails were being rejected."
+belief: "GitLab thought its database backups were running. The pg_dump job had been failing silently."
 date: 2017-01-31
 company: GitLab
 kind: data-loss

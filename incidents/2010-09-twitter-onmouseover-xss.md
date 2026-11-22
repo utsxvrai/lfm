@@ -1,6 +1,7 @@
 ---
 title: "Twitter's onMouseOver worm: a patched XSS bug came back with a site update"
 dek: "JavaScript typed into a tweet ran in the browsers of people who hovered over it. Twitter had fixed the bug the month before, and an unrelated site update brought it back."
+belief: "Twitter thought its XSS bug was fixed. An unrelated site update brought it back as a worm."
 date: 2010-09-21
 company: Twitter
 kind: security-breach

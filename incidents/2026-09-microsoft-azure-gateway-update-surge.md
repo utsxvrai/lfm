@@ -1,6 +1,7 @@
 ---
 title: "A paused Azure gateway update resumed all at once and overwhelmed a control plane that had just been made slower"
 dek: "When a temporary deployment restriction expired, a backlog of gateway OS updates restarted together and flooded the shared regional networking control plane, which an earlier performance change had already slowed. ExpressRoute gateways were also marked healthy before their config was restored, so updates moved on to their redundant twin."
+belief: "Azure thought its gateway updates rolled out gradually. A paused batch resumed at once and swamped the control plane."
 date: 2026-09-30
 company: Microsoft
 kind: outage

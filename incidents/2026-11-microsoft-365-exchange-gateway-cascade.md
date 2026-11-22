@@ -1,6 +1,7 @@
 ---
 title: "A Windows defect shipped in July sat dormant until a busy Thursday took down most of Exchange Online's gateways"
 dek: "A change on Microsoft 365's network gateway servers caused lock contention under heavy load. Planned maintenance, a Teams failover and the US morning peak finally supplied that load, and automatic traffic redistribution carried the failure from server to server and then region to region."
+belief: "Microsoft thought shifting Teams onto Exchange's gateway was routine. A latent defect spread failure to every region."
 date: 2026-11-12
 company: Microsoft
 kind: outage

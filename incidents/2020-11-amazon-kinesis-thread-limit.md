@@ -1,6 +1,7 @@
 ---
 title: "Adding servers to Kinesis pushed every server past its OS thread limit"
 dek: "Each Kinesis front-end server kept one OS thread per peer in the fleet. A small capacity addition pushed every server over an operating-system thread limit, shard-map caches stopped building, and Cognito, CloudWatch, Lambda and EventBridge went down with Kinesis."
+belief: "AWS thought adding Kinesis servers added headroom. It pushed every server past its OS thread limit."
 date: 2020-11-25
 company: Amazon
 kind: outage

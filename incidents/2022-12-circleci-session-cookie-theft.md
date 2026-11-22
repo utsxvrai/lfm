@@ -1,6 +1,7 @@
 ---
 title: "CircleCI: one stolen session cookie exposed every customer's CI secrets"
 dek: "Malware on an engineer's laptop stole a 2FA-backed SSO session. The engineer could mint production access tokens, so the attacker reached CircleCI's databases and pulled encryption keys from a running process to unlock customers' stored secrets."
+belief: "CircleCI trusted 2FA-backed SSO. Malware copied an engineer's session cookie and reached customers' CI secrets."
 date: 2022-12-16
 company: CircleCI
 kind: security-breach

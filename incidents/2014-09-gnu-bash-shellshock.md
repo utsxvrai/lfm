@@ -1,6 +1,7 @@
 ---
 title: "Shellshock: bash ran whatever followed a function in an environment variable"
 dek: "To pass shell functions to child processes, bash stored them in environment variables and evaluated them at startup. It kept evaluating past the end of the function, and CGI copies HTTP headers straight into environment variables."
+belief: "Bash assumed function-like env vars came from bash itself. CGI put HTTP headers there, and bash ran them."
 date: 2014-09-24
 company: GNU
 kind: security-breach

@@ -1,6 +1,7 @@
 ---
 title: "Pakistan Telecom announced one /24 and pulled YouTube's traffic across the world"
 dek: "A national ISP announced a more specific slice of YouTube's address space, its upstream passed it on, and routers everywhere obeyed the longest-prefix-match rule exactly as designed."
+belief: "Pakistan Telecom set out to block YouTube. Its route leaked upstream and pulled YouTube's traffic worldwide."
 date: 2008-02-24
 company: Pakistan Telecom
 kind: outage

@@ -1,6 +1,7 @@
 ---
 title: "TSB's migration to Proteo4UK broke digital banking because two 'identical' data centres weren't"
 dek: "TSB moved its customers to a new core banking platform over one weekend in April 2018, with no way back. The load balancer and the session-security cluster were misconfigured across its two data centres, sessions kept landing in the wrong one, and the one test that would likely have caught it had been scoped down."
+belief: "TSB thought its two data centres were configured identically. They weren't, and online banking broke."
 date: 2018-04-20
 company: TSB
 kind: outage

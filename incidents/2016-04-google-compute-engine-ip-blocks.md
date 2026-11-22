@@ -1,6 +1,7 @@
 ---
 title: "Google Compute Engine withdrew its own IP blocks from the internet, and the canary's warning got lost"
 dek: "Removing one unused IP block hit a bug that dropped every GCE block from the new network config. The canary caught it, a second bug threw away the verdict, and BGP anycast hid the damage until the last site stopped announcing."
+belief: "Google trusted a canary to catch bad network config. A bug skipped it, and GCE's IPs stopped being announced."
 date: 2016-04-11
 company: Google
 kind: outage

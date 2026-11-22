@@ -1,6 +1,7 @@
 ---
 title: "GitHub widened a table's key to 64 bits but not its Vitess lookup table, and review comments stopped working"
 dek: "GitHub had migrated the primary table behind pull request review threads to a 64-bit integer key. The Vitess lookup table that maps those IDs to shards stayed 32-bit. When the IDs passed the 32-bit range, almost every attempt to start a new review thread failed from 15:12 to 19:02 UTC."
+belief: "GitHub migrated its review thread table to 64-bit IDs. A Vitess lookup table was still 32-bit."
 date: 2026-05-06
 company: GitHub
 kind: bug

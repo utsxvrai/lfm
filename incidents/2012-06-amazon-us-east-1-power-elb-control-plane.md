@@ -1,6 +1,7 @@
 ---
 title: "A storm took out one AWS datacenter, and a shared queue stretched the pain across us-east-1"
 dek: "Generators in one facility failed to deliver stable voltage, so a single Availability Zone lost power. The bigger story was recovery: an unseen ELB bug flooded the control plane's single regional queue just as every customer tried to move traffic elsewhere."
+belief: "AWS thought one Availability Zone could fail in isolation. An ELB bug flooded the region's control plane."
 date: 2012-06-29
 company: Amazon
 kind: outage

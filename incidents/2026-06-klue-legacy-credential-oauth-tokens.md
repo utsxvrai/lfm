@@ -1,6 +1,7 @@
 ---
 title: "A credential Klue handed out for a 2022 pilot was never revoked, and it unlocked customers' Salesforce data"
 dek: "Klue stores OAuth tokens that connect its Battlecards product to customers' Salesforce, HubSpot, Gong, Slack and other tools. An attacker used a legacy integration credential, which Klue says it gave a third party for a limited pilot in 2022, to reach Klue's backend, take those tokens, and pull CRM data from customer environments in bulk."
+belief: "Klue customers trusted its Salesforce OAuth access. A long-disused credential let attackers steal the tokens."
 date: 2026-06-12
 company: Klue
 kind: security-breach

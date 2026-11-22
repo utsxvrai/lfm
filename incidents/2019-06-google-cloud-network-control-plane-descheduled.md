@@ -1,6 +1,7 @@
 ---
 title: "Maintenance automation descheduled Google's network control plane in several US locations at once"
 dek: "A maintenance event in one place stopped the jobs that run Google's network control plane in many places, because of two benign-looking configuration settings and a bug in the maintenance software. The network ran on autopilot for a few minutes, then BGP routes were withdrawn and US regions lost much of their capacity."
+belief: "Google thought maintenance stayed local. A bug descheduled its network control plane in several US locations."
 date: 2019-06-02
 company: Google
 kind: outage

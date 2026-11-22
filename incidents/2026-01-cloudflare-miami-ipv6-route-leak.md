@@ -1,6 +1,7 @@
 ---
 title: "Deleting one prefix list turned a Cloudflare export policy into 'advertise everything internal'"
 dek: "An automated change removed a Bogotá prefix list from Miami's BGP export policies. What was left of the term matched every internal route on Juniper routers, so Cloudflare leaked its internally redistributed IPv6 prefixes, including routes learned from peers like Meta, to transit providers and peers for 25 minutes."
+belief: "Cloudflare thought deleting a BGP prefix list would advertise less. It leaked internal IPv6 routes."
 date: 2026-01-22
 company: Cloudflare
 kind: outage

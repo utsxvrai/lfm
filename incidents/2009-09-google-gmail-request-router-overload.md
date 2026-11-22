@@ -1,6 +1,7 @@
 ---
 title: "Gmail's request routers protected themselves by refusing traffic, and took the web interface down"
 dek: "A few overloaded routers told the system to stop sending them traffic. That traffic landed on the rest, which overloaded in turn, until nearly all of them were refusing work. Each router's self-protection added up to a collective collapse."
+belief: "Google thought Gmail's routers could safely shed load. It cascaded and took the Gmail web interface down."
 date: 2009-09-01
 company: Google
 kind: outage

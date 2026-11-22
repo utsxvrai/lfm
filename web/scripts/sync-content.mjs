@@ -195,6 +195,7 @@ const incidents = collection("incidents", ({ slug, data, html, toc, readingTime:
     slug,
     title: data.title,
     dek: data.dek ?? "",
+    belief: data.belief ?? null,
     date,
     year: Number(date.slice(0, 4)),
     company: data.company,

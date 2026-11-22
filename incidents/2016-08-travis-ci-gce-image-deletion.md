@@ -1,6 +1,7 @@
 ---
 title: "Travis CI's cleanup job read only the newest 100 images and deleted the stable ones"
 dek: "An image cleanup service deleted any GCE image missing from the catalog list it fetched. The list was capped at 100 names, newest first, so the oldest images, which were the stable ones every build used, looked unused and were permanently deleted."
+belief: "Travis CI's cleanup job thought it saw every image. The list was capped at 100, so it deleted stable ones."
 date: 2016-08-09
 company: Travis CI
 kind: data-loss

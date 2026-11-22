@@ -1,6 +1,7 @@
 ---
 title: "Instapaper's bookmarks table hit an invisible 2TB ext3 limit on RDS"
 dek: "MySQL RDS instances created before April 2014 sat on ext3, which caps a single file at 2TB. Instapaper's replica-upgraded instance inherited the cap, and its backups inherited it too."
+belief: "Instapaper thought RDS would warn it about a dangerous limit. Its MySQL table hit a silent 2TB ext3 cap."
 date: 2017-02-09
 company: Instapaper
 kind: outage

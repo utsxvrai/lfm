@@ -1,6 +1,7 @@
 ---
 title: "Equifax: an unpatched Struts portal and an expired certificate that blinded monitoring"
 dek: "Attackers came in through a known Apache Struts flaw in a 1970s-era dispute portal and spent 76 days querying 48 databases. The device meant to inspect that traffic had been passing it through uninspected since its SSL certificate expired."
+belief: "Equifax thought it had dealt with the Struts flaw. Its scans missed the portal, and an expired cert blinded its IDS."
 date: 2017-05-13
 company: Equifax
 kind: security-breach

@@ -1,6 +1,7 @@
 ---
 title: "DynamoDB's membership requests outgrew their timeout, and retries kept them that way"
 dek: "Global Secondary Indexes quietly made storage servers' membership lists bigger until answering them took nearly as long as the timeout. A brief network blip sent many requests at once, they timed out, and the retries kept the metadata service overloaded for hours."
+belief: "AWS assumed DynamoDB membership replies stayed small. They grew, timed out, and retries overloaded metadata."
 date: 2015-09-20
 company: Amazon
 kind: outage

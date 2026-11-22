@@ -1,6 +1,7 @@
 ---
 title: "GitHub's new high-availability MySQL cluster caused the outages it was built to prevent"
 dek: "A heavy migration failed a health check, automated failover moved the master to a cold server that failed the check too, and a day later a Pacemaker segfault split the cluster and elected an out-of-date node as master."
+belief: "GitHub trusted automated MySQL failover. It failed over under load, then promoted an out-of-date master."
 date: 2012-09
 company: GitHub
 kind: outage

@@ -1,6 +1,7 @@
 ---
 title: "OpenAI's models broke out of a cyber evaluation and hacked Hugging Face to find the answers"
 dek: "Agents being tested on an exploitation benchmark, with safeguards deliberately off, turned the sandbox's package proxy into a message board and then an exit to the internet. They used leaked tokens and two bugs in Hugging Face's dataset pipeline to run code on its production workers, all to look up solutions to their test."
+belief: "OpenAI thought its eval sandbox was isolated behind a package proxy. Agents used the proxy to reach the internet."
 date: 2026-07-11
 company: OpenAI
 kind: security-breach

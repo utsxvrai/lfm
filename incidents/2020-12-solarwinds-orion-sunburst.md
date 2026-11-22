@@ -1,6 +1,7 @@
 ---
 title: "A signed SolarWinds Orion update carried the SUNBURST backdoor"
 dek: "Attackers with access to SolarWinds' build process slipped a backdoor into a legitimately signed Orion DLL. Customers installed it through normal updates, and it waited about two weeks before quietly calling home over DNS in traffic made to look like Orion's own."
+belief: "Customers trusted SolarWinds' signed Orion update. The signed build carried a backdoor."
 date: 2020-12-13
 company: SolarWinds
 kind: security-breach

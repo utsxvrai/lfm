@@ -1,6 +1,7 @@
 ---
 title: "A reordered BGP policy put 'reject the rest' first and took 19 Cloudflare data centers offline"
 dek: "A change meant only to add informational BGP communities also reordered the terms of a router policy. Two terms that advertised site-local prefixes ended up below an explicit reject, so 19 of Cloudflare's busiest data centers stopped announcing them. Those sites were 4% of the network and carried 50% of requests."
+belief: "Cloudflare's BGP change looked like it only added lines. It reordered terms and took 19 data centers offline."
 date: 2022-06-21
 company: Cloudflare
 kind: outage

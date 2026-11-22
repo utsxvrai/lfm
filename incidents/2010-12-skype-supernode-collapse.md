@@ -1,6 +1,7 @@
 ---
 title: "Skype went down for 24 hours when slow server replies crashed the users' PCs that ran its network"
 dek: "Slow responses from overloaded offline-messaging servers crashed one Windows client version. Some of those clients were supernodes, the users' machines that held Skype's peer-to-peer network together, and the rest of the supernodes went down under the extra load."
+belief: "Skype expected its P2P network to absorb client crashes. One buggy version took down the supernodes."
 date: 2010-12-22
 company: Skype
 kind: outage

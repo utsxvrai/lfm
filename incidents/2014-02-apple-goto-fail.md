@@ -1,6 +1,7 @@
 ---
 title: "One duplicated line of C turned off TLS signature checks on iPhones and Macs"
 dek: "Apple's SecureTransport had two `goto fail;` lines in a row. The second one wasn't attached to any if-statement, so the handshake signature check always jumped to the exit with a success code. Any network attacker could impersonate any HTTPS site."
+belief: "Apple's TLS code looked like it checked every step. A duplicated goto fail skipped signature verification."
 date: 2014-02-21
 company: Apple
 kind: bug

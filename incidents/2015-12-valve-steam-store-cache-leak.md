@@ -1,6 +1,7 @@
 ---
 title: "A Christmas DDoS fix made Steam's CDN cache logged-in users' pages and serve them to strangers"
 dek: "To absorb a 2000% traffic spike, Valve's caching partner rolled out more aggressive cache rules. The second set cached responses for authenticated users, and for 90 minutes the Steam Store served one person's account page to another."
+belief: "Valve's fix for a Steam traffic spike was more caching. The new rules served one user's account page to another."
 date: 2015-12-25
 company: Valve
 kind: security-breach

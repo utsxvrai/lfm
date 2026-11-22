@@ -1,6 +1,7 @@
 ---
 title: "A storm took out Nebius's cooling and the system that would have reported it"
 dek: "A storm-related event at the us-central1 facility disabled both the chilled-water loop and the building management system that monitors it, so no facility alert fired while the halls overheated. Bringing a whole region back from a hard power loss then exposed recovery automation built for one failure at a time, and a disk hot-plug bug kept Kubernetes control planes down for hours."
+belief: "Nebius assumed a cooling failure would raise an alert. The storm also disabled the system that monitors the facility."
 date: 2026-08-19
 company: Nebius
 kind: outage

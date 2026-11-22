@@ -1,6 +1,7 @@
 ---
 title: "A policy row with blank fields crash-looped Google Cloud's Service Control in every region"
 dek: "Google shipped new quota-check code to Service Control region by region, but the code only ran once a matching policy existed, and it had no error handling and no feature flag. When such a policy arrived it replicated globally within seconds, hit a null pointer and crashed Service Control in every region at once."
+belief: "Google thought its region-by-region rollout had tested the new code. A policy change crashed it in every region."
 date: 2025-06-12
 company: Google
 kind: outage

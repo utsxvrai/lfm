@@ -20,10 +20,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = incidentBySlug(slug);
   if (!post) return {};
   return {
-    title: `${post.title} — ${post.company}, ${post.year}`,
+    title: post.belief ?? `${post.title} — ${post.company}, ${post.year}`,
     description: post.dek,
     alternates: { canonical: `/incidents/${post.slug}` },
-    openGraph: { title: post.title, description: post.dek, type: "article" },
+    openGraph: { title: post.belief ?? post.title, description: post.dek, type: "article" },
+    twitter: { title: post.belief ?? post.title, description: post.dek },
   };
 }
 
@@ -98,7 +99,8 @@ export default async function IncidentPage({ params }: Props) {
             ))}
           </div>
 
-          <h1 className="post-title mt-4">{post.title}</h1>
+          {post.belief && <p className="post-belief mt-5">{post.belief}</p>}
+          <h1 className={`post-title ${post.belief ? "mt-2" : "mt-4"}`}>{post.title}</h1>
           {post.dek && <p className="post-dek mt-3">{post.dek}</p>}
 
           <div className="byline mt-7">

@@ -1,6 +1,7 @@
 ---
 title: "A failed transaction left a dirty journal in Base's sequencer and halted the chain twice"
 dek: "When an invalid transaction failed inside Base's block builder, the EVM journal of accounts and storage slots it had touched was not cleared. The next, valid transaction was charged gas against that stale state, the sequencer sealed a block no validator could reproduce, and the chain stopped for 116 minutes. A second bug in the restart path made it happen again the next day."
+belief: "Base assumed a failed transaction left no trace. A stale EVM journal mispriced the next one and halted the chain."
 date: 2026-06-25
 company: Base
 kind: outage

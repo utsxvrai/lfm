@@ -1,6 +1,7 @@
 ---
 title: "One WAF regex exhausted every HTTP CPU core in Cloudflare's network for 27 minutes"
 dek: "A new XSS rule contained a regex with two greedy wildcards in a row, which backtracks super-linearly. WAF rules shipped globally in seconds with no staged rollout, a CPU guard had been removed weeks earlier, and every proxy on the network went to nearly 100% CPU at once."
+belief: "Cloudflare thought a simulate-mode WAF rule was safe to push globally. One regex exhausted CPU network-wide."
 date: 2019-07-02
 company: Cloudflare
 kind: outage

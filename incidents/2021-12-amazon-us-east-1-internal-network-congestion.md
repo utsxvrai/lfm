@@ -1,6 +1,7 @@
 ---
 title: "An automated scaling job set off a retry storm that choked AWS's internal network in us-east-1"
 dek: "AWS runs its monitoring, internal DNS and parts of the EC2 control plane on a separate internal network, joined to the main network by a set of devices. A routine capacity-scaling job triggered a latent bug that stopped clients from backing off, their retries saturated those devices, and the operators lost the monitoring they needed to see it."
+belief: "AWS thought its internal clients backed off under congestion. A latent bug stopped them, choking us-east-1."
 date: 2021-12-07
 company: Amazon
 kind: outage

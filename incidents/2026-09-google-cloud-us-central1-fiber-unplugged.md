@@ -1,6 +1,7 @@
 ---
 title: "A router upgrade meant for several days unplugged every fiber in 13 minutes and cut off part of Google Cloud us-central1"
 dek: "The plan was one router at a time with traffic drained and connectivity verified between steps. A procedural error handed the technician the full list of transceiver swaps at once, with no sequencing and no verification step, and the redundant routers went dark together."
+belief: "Google Cloud planned a router upgrade one device at a time. The work order sent every fiber swap at once."
 date: 2026-09-01
 company: Google
 kind: outage

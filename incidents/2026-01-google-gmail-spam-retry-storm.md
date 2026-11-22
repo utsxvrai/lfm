@@ -1,6 +1,7 @@
 ---
 title: "A brief backend failure set off a retry storm that left Gmail's spam checks failing for 4 hours 53 minutes"
 dek: "A component in Gmail's mail-processing pipeline failed temporarily. The retry mechanism built to ride out exactly that kind of blip generated so much traffic that it overloaded the spam-checking systems. Promotions landed in Primary, spam warnings appeared on mail from known senders, and messages were delayed."
+belief: "Gmail's retries were built to ride out brief failures. The retry storm overloaded its spam checks."
 date: 2026-01-24
 company: Google
 kind: outage

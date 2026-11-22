@@ -1,6 +1,7 @@
 ---
 title: "20,000 spaces and a trim regex took Stack Overflow down for 34 minutes"
 dek: "A post with about 20,000 consecutive whitespace characters made a harmless-looking trailing-whitespace regex do quadratic work on every home page view. The home page was also the load balancer's health check, so every server was pulled from rotation."
+belief: "Stack Exchange's trailing-whitespace regex looked linear. 20,000 spaces made it quadratic and took the site down."
 date: 2016-07-20
 company: Stack Exchange
 kind: outage

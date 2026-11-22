@@ -1,6 +1,7 @@
 ---
 title: "Roblox was down for 73 hours because Consul, its service discovery, couldn't keep up with writes"
 dek: "A newly enabled Consul streaming feature created contention on a single Go channel under heavy read and write load, and a BoltDB freelist problem made every Raft write on some leaders drag a 7.8MB freelist to disk. Every service depended on that one Consul cluster, including the monitoring needed to find the cause."
+belief: "Roblox thought Consul's streaming feature was proven. Under heavy load it blocked writes, and Roblox went down."
 date: 2021-10-28
 company: Roblox
 kind: outage

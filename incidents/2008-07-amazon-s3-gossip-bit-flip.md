@@ -1,6 +1,7 @@
 ---
 title: "A single flipped bit in a few gossip messages took Amazon S3 down for most of a day"
 dek: "S3 checksummed customer data everywhere but not the internal state its servers gossiped to each other. A handful of messages with one bit corrupted still parsed, spread through the fleet, and left servers doing almost nothing but gossiping."
+belief: "Amazon S3 checksummed customer data but not internal gossip. One flipped bit spread and took S3 down."
 date: 2008-07-20
 company: Amazon
 kind: outage

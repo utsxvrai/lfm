@@ -1,6 +1,7 @@
 ---
 title: "Stolen Heroku and Travis CI OAuth tokens let an attacker clone private GitHub repos, including npm's"
 dek: "An attacker got into a Heroku database and downloaded the GitHub OAuth tokens Heroku stored for its customers. Each token was a working credential into someone's GitHub account, so the attacker listed organizations, picked targets and cloned private repositories. GitHub spotted it when one of those repos yielded an AWS key used against npm."
+belief: "Heroku kept GitHub OAuth tokens in its database. Stolen from there, they opened customers' private repos."
 date: 2022-04-07
 company: Heroku
 kind: security-breach

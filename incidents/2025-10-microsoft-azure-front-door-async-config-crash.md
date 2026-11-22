@@ -1,6 +1,7 @@
 ---
 title: "Azure Front Door's bad config passed every health gate because the crash came later"
 dek: "Configuration changes across two control-plane versions produced metadata the data plane couldn't handle, but only in an asynchronous cleanup step that ran after health checks had already passed. The metadata rolled out globally, became the 'last known good' snapshot, and then crashed Azure Front Door nodes."
+belief: "Azure Front Door trusted its canaries to catch bad config. The crash came after health checks passed."
 date: 2025-10-29
 company: Microsoft
 kind: outage

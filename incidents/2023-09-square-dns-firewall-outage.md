@@ -1,6 +1,7 @@
 ---
 title: "Square went down overnight when a firewall change and a DNS upgrade overloaded its internal DNS"
 dek: "A small host-firewall policy change expanded into a huge ruleset on every node. Combined with a DNS service upgrade, it knocked over Square's internal DNS servers; once node caches expired, services couldn't find each other, and the tools needed to fix it depended on the same DNS."
+belief: "Square's small firewall policy change looked unrelated to DNS. It knocked over internal DNS."
 date: 2023-09-07
 company: Square
 kind: outage

@@ -1,6 +1,7 @@
 ---
 title: "A power blip rebooted a quarter of GitHub's servers, and the app wouldn't start without Redis"
 dek: "A brief power disruption rebooted one hardware class, and a firmware bug kept those machines from seeing their own disks. That took down whole Redis clusters, and the application had quietly come to need Redis just to boot."
+belief: "GitHub spread Redis across racks. After a power cut one hardware class didn't come back, and the app needed Redis."
 date: 2016-01-28
 company: GitHub
 kind: outage

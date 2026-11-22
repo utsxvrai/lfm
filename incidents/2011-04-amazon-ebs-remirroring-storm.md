@@ -1,6 +1,7 @@
 ---
 title: "A wrong traffic shift set off an EBS re-mirroring storm in AWS us-east-1"
 dek: "A network change sent EBS's primary traffic onto a low-capacity backup network. A large number of storage nodes concluded their replicas were dead, all tried to re-replicate at once, used up the free space in the cluster and kept retrying."
+belief: "AWS assumed EBS replica loss was rare. A network change set off a re-mirroring storm in us-east-1."
 date: 2011-04-21
 company: Amazon
 kind: outage

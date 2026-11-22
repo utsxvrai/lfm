@@ -1,6 +1,7 @@
 ---
 title: "Three bugs in Facebook’s “View As” put other people’s access tokens in the page HTML"
 dek: "A view-only preview still showed a birthday-post composer, its video uploader minted a full mobile-app token, and that token belonged to the person being previewed. Attackers chained it from friend to friend and stole tokens for about 30 million accounts."
+belief: "Facebook built View As to be view-only. It put other users' access tokens in the page HTML."
 date: 2018-09-25
 company: Meta
 kind: security-breach

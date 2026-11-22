@@ -1,6 +1,7 @@
 ---
 title: "A bug in a config generator took Gmail, Calendar and Docs down for 25 minutes"
 dek: "An internal system that writes configuration for other systems produced a bad config, and it rolled out to live services over 15 minutes. The services did exactly what the config told them: ignore users' requests for their data."
+belief: "Google's generated config was trusted like compiler output. One bad config made Gmail and Docs ignore users."
 date: 2014-01-24
 company: Google
 kind: outage

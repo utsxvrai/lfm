@@ -1,6 +1,7 @@
 ---
 title: "A too-small KV cache and an SGLang bug made Workers AI answer with other users' prompts"
 dek: "Cloudflare launched GLM-5.3 with a context window bigger than its prefill KV-cache pool. In disaggregated mode, SGLang marked over-long prompts as rejected but still handed them to decode, which attended over cache pages that still held other customers' data."
+belief: "Cloudflare expected Workers AI to error on prompts too big for the KV cache. It returned other users' data instead."
 date: 2026-08-27
 company: Cloudflare
 kind: bug

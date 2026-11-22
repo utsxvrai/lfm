@@ -15,7 +15,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   if (!post) return ogCard({ title: "Learn From Mistakes", footer: "learnfrommistakes.in" });
   return ogCard({
     eyebrow: `${post.company} · ${post.year} · ${post.kind.replace(/-/g, " ")}`,
-    title: post.title,
+    title: post.belief ?? post.title,
     footer: `${post.readingTime} min read · learnfrommistakes.in`,
   });
 }

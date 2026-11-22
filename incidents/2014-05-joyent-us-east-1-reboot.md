@@ -1,6 +1,7 @@
 ---
 title: "One mistyped command rebooted every server in Joyent's us-east-1"
 dek: "An operator meant to reboot a handful of new servers and targeted the whole data center instead. The tool didn't object. Then every machine tried to PXE boot at the same moment."
+belief: "Joyent's reboot tool had no 'are you sure?' check. An operator rebooted the whole data center by mistake."
 date: 2014-05-27
 company: Joyent
 kind: outage

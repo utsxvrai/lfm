@@ -1,6 +1,7 @@
 ---
 title: "A race between two DNS Enactors emptied DynamoDB's us-east-1 endpoint and stalled EC2 for hours"
 dek: "DynamoDB's DNS automation checked once that its plan was newer, then spent a long time applying it. Meanwhile another instance applied a newer plan and deleted old ones, including the one the slow instance had just written. The endpoint's DNS record ended up empty, and the automation couldn't repair it."
+belief: "AWS thought a DNS plan checked as newest was safe to apply. A race left DynamoDB's us-east-1 DNS record empty."
 date: 2025-10-19
 company: Amazon
 kind: outage

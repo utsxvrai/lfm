@@ -1,6 +1,7 @@
 ---
 title: "An attacker still inside Trivy's pipeline turned its version tags into a credential stealer"
 dek: "After a February breach, Aqua Security rotated credentials, but not all at once. On March 19 someone used retained access to publish a malicious Trivy release and force-push almost every trivy-action and setup-trivy tag to code that read secrets out of CI runner memory, then ran the real scan so the job still went green."
+belief: "Aqua Security thought rotating credentials shut the attacker out of Trivy. The rotation wasn't atomic."
 date: 2026-03-19
 company: Aqua Security
 kind: security-breach

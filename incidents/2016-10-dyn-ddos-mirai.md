@@ -1,6 +1,7 @@
 ---
 title: "A Mirai DDoS on Dyn's DNS was amplified by the internet's own retries"
 dek: "Attack traffic on port 53 looked like real DNS queries, and real resolvers that couldn't get answers kept asking again. Dyn saw 10-20X normal traffic and couldn't tell friend from foe."
+belief: "DDoS defence assumes attack traffic looks different. At Dyn, it looked like real DNS queries on port 53."
 date: 2016-10-21
 company: Dyn
 kind: outage

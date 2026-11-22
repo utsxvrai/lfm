@@ -1,6 +1,7 @@
 ---
 title: "Uber's 2022 breach: a bought password and a 2FA prompt someone finally accepted"
 dek: "An attacker likely bought an Uber contractor's corporate password, then kept triggering two-factor approval requests until the contractor approved one. From that foothold they reached other accounts, G-Suite, Slack and Uber's HackerOne dashboard."
+belief: "Uber relied on push MFA to stop stolen passwords. A contractor eventually approved an attacker's login request."
 date: 2022-09-15
 company: Uber
 kind: security-breach

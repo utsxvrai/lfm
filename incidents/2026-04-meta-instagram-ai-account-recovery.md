@@ -1,6 +1,7 @@
 ---
 title: "Instagram's AI recovery tool sent password reset links to whatever email the requester typed"
 dek: "Instagram's AI-assisted High Touch Support could send a password reset link to an email address. A bug in a separate code path skipped the check that the address belonged to the account, so attackers asked the chatbot to send the link to their own inbox. 20,225 accounts were taken over."
+belief: "Meta thought Instagram reset links only went to the account's email. A bug sent them to unassociated ones."
 date: 2026-04-17
 company: Meta
 kind: security-breach

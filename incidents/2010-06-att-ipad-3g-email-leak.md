@@ -1,6 +1,7 @@
 ---
 title: "AT&T's iPad 3G site handed out an email address to anyone who sent a device ID"
 dek: "AT&T's site took a device identifier from the URL and returned the matching subscriber's email address. The identifier was guessable, so a script that counted through it collected about 120,000 addresses."
+belief: "AT&T kept iPad SIM IDs confidential. Its site returned an email for any ID, and the IDs were guessable."
 date: 2010-06
 company: AT&T
 kind: security-breach

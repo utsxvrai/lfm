@@ -1,6 +1,7 @@
 ---
 title: "A storage update emptied Gmail inboxes, and tape backups brought them back"
 dek: "A bug in a storage software update deleted copies of mail for 0.02% of Gmail users across Google's replicated copies. The copy that survived was the offline one, on tape."
+belief: "Google trusted Gmail's replicas. A storage update bug deleted several copies; tape restored the mail."
 date: 2011-02-27
 company: Google
 kind: data-loss

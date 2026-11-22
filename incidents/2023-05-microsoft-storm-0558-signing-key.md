@@ -1,6 +1,7 @@
 ---
 title: "Storm-0558: a stolen 2016 consumer signing key opened enterprise Exchange Online mailboxes"
 dek: "Attackers forged authentication tokens with a Microsoft consumer (MSA) signing key that should have been retired. Exchange Online accepted them for enterprise accounts because its token validation checked the signature but not which kind of key had signed it."
+belief: "Microsoft assumed its token library fully checked signing keys. A consumer key opened enterprise mailboxes."
 date: 2023-05-15
 company: Microsoft
 kind: security-breach

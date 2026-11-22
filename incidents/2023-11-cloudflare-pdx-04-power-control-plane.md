@@ -1,6 +1,7 @@
 ---
 title: "Cloudflare's control plane went dark when one Oregon data center lost all power"
 dek: "A ground fault at Flexential's PDX-04 tripped both the utility feed and the generators, and the UPS ran out early. Cloudflare's high-availability cluster survived as designed, but services that should have been redundant turned out to depend on Kafka and ClickHouse running only in that building."
+belief: "Cloudflare thought its control plane survived losing any one data center. Key services depended on one building."
 date: 2023-11-02
 company: Cloudflare
 kind: outage

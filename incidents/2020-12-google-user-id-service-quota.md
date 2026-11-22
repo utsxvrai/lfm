@@ -1,6 +1,7 @@
 ---
 title: "A quota system read zero usage and shrank Google's login database until sign-in failed"
 dek: "During a quota-system migration, a leftover piece of the old system reported the User ID Service's usage as zero. When a grace period ran out, automation cut its storage quota, the Paxos leader could no longer write, reads went stale, and every Google sign-in failed for 47 minutes."
+belief: "Google's quota safety checks trusted reported usage. A false zero cut storage and broke sign-in."
 date: 2020-12-14
 company: Google
 kind: outage

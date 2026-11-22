@@ -1,6 +1,7 @@
 ---
 title: "Basecamp 3 went read-only when its events table ran out of 32-bit IDs"
 dek: "The table that records nearly every action in Basecamp 3 used a regular integer primary key. At 2,147,483,647 inserts stopped, and the fix was a column type change on a very large table that took hours."
+belief: "Basecamp thought it had headroom on its events table IDs. It ran out of 32-bit integers and went read-only."
 date: 2018-11-08
 company: Basecamp
 kind: outage

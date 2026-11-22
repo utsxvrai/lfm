@@ -1,6 +1,7 @@
 ---
 title: "Heartbleed: OpenSSL trusted a length field and echoed back 64k of its own memory"
 dek: "The TLS heartbeat extension asks the peer to echo a payload back. OpenSSL believed the payload length the attacker claimed instead of the bytes it actually received, so every heartbeat could leak up to 64k of server memory, keys included."
+belief: "OpenSSL trusted the heartbeat's claimed length. Each request leaked up to 64k of server memory, keys included."
 date: 2014-04-07
 company: OpenSSL
 kind: security-breach

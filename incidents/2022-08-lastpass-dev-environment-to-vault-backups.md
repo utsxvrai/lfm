@@ -1,6 +1,7 @@
 ---
 title: "LastPass: a dev-environment breach became a theft of every customer's vault backup"
 dek: "Source code and secrets stolen in August 2022 told an attacker which engineer to target next. That engineer held the keys to LastPass's cloud backups, and the backups held encrypted copies of customer vaults."
+belief: "LastPass thought its dev environment was walled off from production. A breach there led to stolen vault backups."
 date: 2022-08
 company: LastPass
 kind: security-breach

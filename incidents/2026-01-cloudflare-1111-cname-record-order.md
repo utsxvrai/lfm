@@ -1,6 +1,7 @@
 ---
 title: "A memory optimisation moved CNAMEs to the bottom of 1.1.1.1's answers and broke DNS clients"
 dek: "To save an allocation, Cloudflare's resolver started appending cached CNAME records after the freshly resolved A/AAAA records instead of before them. Most clients didn't care. glibc's getaddrinfo did, and so did three models of Cisco switch, which went into reboot loops."
+belief: "Cloudflare assumed DNS answer order didn't matter. Putting CNAMEs last in 1.1.1.1 broke DNS clients."
 date: 2026-01-08
 company: Cloudflare
 kind: bug

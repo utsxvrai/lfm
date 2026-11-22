@@ -51,7 +51,7 @@ function matches(e: ArchiveEntry, f: Filters): boolean {
   if (f.company && e.company !== f.company) return false;
   if (f.year && e.year !== f.year) return false;
   if (f.q) {
-    const hay = `${e.title} ${e.dek} ${e.company} ${e.topics.join(" ")} ${e.stack.join(" ")}`.toLowerCase();
+    const hay = `${e.title} ${e.belief ?? ""} ${e.dek} ${e.company} ${e.topics.join(" ")} ${e.stack.join(" ")}`.toLowerCase();
     if (!f.q.toLowerCase().split(/\s+/).every((w) => hay.includes(w))) return false;
   }
   return true;

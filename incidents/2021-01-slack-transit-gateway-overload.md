@@ -1,6 +1,7 @@
 ---
 title: "Slack's first workday of 2021 overloaded the AWS gateways linking its VPCs"
 dek: "Traffic jumped overnight from the quietest week of the year to one of the busiest days, and the AWS Transit Gateways linking Slack's VPCs didn't scale fast enough. Packet loss tricked autoscaling, overloaded the service that provisions new servers, and took down the dashboards engineers needed to debug it."
+belief: "Slack trusted AWS Transit Gateways to scale transparently. Its first workday of 2021 overloaded them."
 date: 2021-01-04
 company: Slack
 kind: outage

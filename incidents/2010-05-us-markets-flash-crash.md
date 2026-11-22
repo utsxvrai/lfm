@@ -1,6 +1,7 @@
 ---
 title: "The 2010 Flash Crash: a sell algorithm that watched volume, not price"
 dek: "A $4.1 billion sell program was set to trade 9% of the previous minute's volume, regardless of price. When high-frequency traders started passing contracts back and forth, volume spiked, the algorithm sold faster, and liquidity in the E-Mini fell to under 1% of its morning level."
+belief: "A sell algorithm read trading volume as liquidity. In the Flash Crash, volume spiked as liquidity vanished."
 date: 2010-05-06
 company: US markets
 kind: financial-loss

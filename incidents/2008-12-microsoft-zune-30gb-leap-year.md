@@ -1,6 +1,7 @@
 ---
 title: "Zune 30GB players stopped working on the last day of a leap year"
 dek: "A clock driver in Microsoft's 2006 Zune 30GB mishandled December 31, 2008, the 366th day of the year. The official fix was to wait for January 1 and let the battery run flat."
+belief: "Microsoft's Zune 30GB had never met the last day of a leap year. On that day, the players stopped working."
 date: 2008-12-31
 company: Microsoft
 kind: bug

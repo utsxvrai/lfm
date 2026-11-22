@@ -1,6 +1,7 @@
 ---
 title: "Unpublishing left-pad broke thousands of npm builds, and a new 1.0.0 couldn't fix them"
 dek: "During a dispute over a package name, an author unpublished kik and 272 other packages, including the tiny left-pad. Installs that depended on it failed across the dependency graph, and a replacement didn't help because babel and atom pulled in exactly version 0.0.3."
+belief: "npm assumed old package versions would stay published. Unpublishing left-pad broke babel and atom installs."
 date: 2016-03-22
 company: npm
 kind: outage

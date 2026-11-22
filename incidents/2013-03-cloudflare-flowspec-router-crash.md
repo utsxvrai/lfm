@@ -1,6 +1,7 @@
 ---
 title: "One impossible firewall rule crashed every Cloudflare edge router at once"
 dek: "To stop a DDoS, an engineer pushed a Flowspec rule matching packets around 99,971 bytes long. Flowspec delivered it to every edge router, and the routers ate all their RAM and died. Anycast then sent all the traffic to whichever few came back."
+belief: "Cloudflare thought a Flowspec rule for impossible packet sizes was harmless. It crashed every edge router."
 date: 2013-03-03
 company: Cloudflare
 kind: outage

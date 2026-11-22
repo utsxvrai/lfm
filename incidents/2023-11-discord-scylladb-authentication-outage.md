@@ -1,6 +1,7 @@
 ---
 title: "A routine ScyllaDB OS upgrade and one slow disk broke Discord logins"
 dek: "Discord upgraded its ScyllaDB clusters one zone at a time, which a quorum-replicated cluster is designed to survive. On the small authentication cluster, one zone down plus one degraded disk plus cold caches plus client retries was enough to take availability to about 25%."
+belief: "Discord's ScyllaDB was built to survive losing one zone. One zone down plus a slow disk broke logins."
 date: 2023-11-06
 company: Discord
 kind: outage

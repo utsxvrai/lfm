@@ -1,6 +1,7 @@
 ---
 title: "Stolen Salesloft Drift OAuth tokens let UNC6395 export data from Salesforce instances"
 dek: "A threat actor used OAuth tokens belonging to the Salesloft Drift integration to query and export customer Salesforce data, then searched it for AWS keys, passwords and Snowflake tokens. The tokens were legitimate, so logins and MFA never came into it."
+belief: "Salesforce customers trusted MFA to guard their CRM. Stolen Salesloft Drift OAuth tokens bypassed it."
 date: 2025-08-08
 company: Salesloft
 kind: security-breach

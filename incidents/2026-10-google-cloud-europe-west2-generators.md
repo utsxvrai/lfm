@@ -1,6 +1,7 @@
 ---
 title: "Google's London generators didn't start because the controller could still see voltage on a feed that was switched off"
 dek: "One of the europe-west2-b facility's two utility feeds was open for repairs when an underground cable fault cut the other. The generator controller's undervoltage sensors sat upstream of the open breaker, saw a live feed, and never sent a start signal. The UPS batteries ran down and the zone went dark."
+belief: "Google Cloud expected generators to start if feed A failed. The controller saw live voltage on feed B and didn't."
 date: 2026-10-19
 company: Google
 kind: outage

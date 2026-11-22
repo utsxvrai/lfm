@@ -1,6 +1,7 @@
 ---
 title: "An automated repair of one optical device cut Azure West US off from the WAN"
 dek: "A bug in Azure's blast-radius analysis widened a routine break-fix on one optical device to every optical device leaving a datacenter. The safety check ran, but it judged each device on its own, so it approved withdrawing routes from all of them at once. The links still looked healthy, and the automated rollback needed the very connectivity it had just removed."
+belief: "Azure expected a single-device optical repair to be impactless. A scope bug withdrew every path out of a datacenter."
 date: 2026-07-23
 company: Microsoft
 kind: outage

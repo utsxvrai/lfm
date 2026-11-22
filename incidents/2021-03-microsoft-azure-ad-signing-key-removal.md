@@ -1,6 +1,7 @@
 ---
 title: "Azure AD's key-cleanup automation removed a signing key it was told to keep"
 dek: "An automated job that removes unused signing keys ignored a 'retain' flag and dropped a key Azure AD still used. Apps refreshed the published key metadata, stopped trusting tokens signed with that key, and sign-in to Teams, Exchange, Azure and more failed. Rolling back was fast; getting every app's cache to notice took until the next morning."
+belief: "Azure AD's key cleanup was supposed to honor a 'retain' flag. It removed a signing key still in use."
 date: 2021-03-15
 company: Microsoft
 kind: outage

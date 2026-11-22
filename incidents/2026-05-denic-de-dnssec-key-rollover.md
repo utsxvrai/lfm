@@ -1,6 +1,7 @@
 ---
 title: "A key rollover that made three keys instead of one broke DNSSEC for all of .de"
 dek: "DENIC's in-house rollover agent was supposed to generate one signing key and load it into every HSM. Instead it generated a different key per HSM, all with the same key tag. Only one of them was published, so only about a third of the zone's signatures could be validated, and validating resolvers stopped resolving .de names for about three hours."
+belief: "DENIC thought every HSM held the same DNSSEC key. Each got a different one, and .de stopped resolving."
 date: 2026-05-05
 company: DENIC
 kind: outage

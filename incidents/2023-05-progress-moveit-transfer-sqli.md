@@ -1,6 +1,7 @@
 ---
 title: "MOVEit Transfer: a SQL injection zero-day let CL0P plant a web shell and drain file-transfer servers"
 dek: "CL0P exploited an unauthenticated SQL injection in Progress MOVEit Transfer to install the LEMURLOOT web shell on internet-facing servers, then used it to pull files, Azure storage keys and database records, and to create admin accounts that survived a web server rebuild."
+belief: "MOVEit Transfer's logins were supposed to guard its files. An unauthenticated SQL injection reached the database."
 date: 2023-05-27
 company: Progress
 kind: security-breach

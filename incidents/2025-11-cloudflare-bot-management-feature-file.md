@@ -1,6 +1,7 @@
 ---
 title: "A ClickHouse permissions change doubled Cloudflare's Bot Management feature file and made the proxy panic"
 dek: "A metadata query that never filtered by database started returning every column twice once users could see the underlying tables. The Bot Management feature file grew past a 200-feature preallocation limit, and the Rust proxy hit an unwrap() on the error. Because the file was regenerated every five minutes from a partly upgraded cluster, the network failed, recovered and failed again."
+belief: "Cloudflare first suspected a DDoS attack. A doubled Bot Management feature file was crashing its proxy."
 date: 2025-11-18
 company: Cloudflare
 kind: outage

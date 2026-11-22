@@ -1,6 +1,7 @@
 ---
 title: "A 16-bit ID and a fixed port: how most DNS resolvers could be poisoned in 2008"
 dek: "A caching resolver trusts the first answer that matches its question. CERT's 2008 advisory showed that in many implementations the only secret in that match was a 16-bit number, and that attacks combining known weaknesses had become extremely effective."
+belief: "Many DNS resolvers relied on a 16-bit query ID and a fixed port. Forged answers could poison the cache."
 date: 2008-07-08
 company: Multiple vendors
 kind: security-breach

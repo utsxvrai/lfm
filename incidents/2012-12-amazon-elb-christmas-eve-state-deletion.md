@@ -1,6 +1,7 @@
 ---
 title: "A maintenance job deleted AWS load balancer state on Christmas Eve, and Netflix went dark on TVs"
 dek: "A process run against production ELB state data by mistake didn't break any load balancers directly. The damage came later, each time the control plane tried to change a load balancer using data that was no longer there."
+belief: "AWS chased the ELB outage as an API error problem. A process had deleted production ELB state data."
 date: 2012-12-24
 company: Amazon
 kind: outage

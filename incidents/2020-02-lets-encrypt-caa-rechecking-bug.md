@@ -1,6 +1,7 @@
 ---
 title: "A Go loop variable made Let's Encrypt check one domain N times instead of N domains once"
 dek: "Boulder converted a map of authorizations to protobufs by taking a pointer into the loop variable. Every entry ended up naming the same domain, so CAA rechecks covered one name per certificate and skipped the rest. About 3 million certificates were affected."
+belief: "Let's Encrypt thought a CAA bug was cosmetic. It rechecked one domain per certificate and skipped the rest."
 date: 2020-02-29
 company: "Let's Encrypt"
 kind: bug

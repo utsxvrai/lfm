@@ -1,6 +1,7 @@
 ---
 title: "A BGP optimizer's more-specific routes leaked through Verizon and pulled Internet traffic into a small ISP"
 dek: "A Pennsylvania ISP's BGP optimizer split real prefixes into smaller ones for internal use. They leaked to a customer, then to Verizon, which passed them to the whole Internet. Because routers always prefer the most specific route, traffic for Cloudflare, Amazon and others headed for networks that couldn't carry it."
+belief: "BGP optimizer routes were meant to stay internal. They leaked through Verizon to the whole Internet."
 date: 2019-06-24
 company: Verizon
 kind: outage

@@ -23,6 +23,8 @@ export type Incident = {
   slug: string;
   title: string;
   dek: string;
+  /** The wrong belief, phrased as people search for it; used for <title> and share cards. */
+  belief: string | null;
   date: string;
   year: number;
   company: string;
@@ -52,6 +54,7 @@ export type ArchiveEntry = {
   num: string | null;
   title: string;
   dek: string;
+  belief: string | null;
   date: string;
   year: number;
   company: string;
@@ -97,6 +100,7 @@ export function archive(): ArchiveEntry[] {
     num: null,
     title: i.title,
     dek: i.dek,
+    belief: i.belief,
     date: i.date,
     year: i.year,
     company: i.company,

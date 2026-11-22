@@ -1,6 +1,7 @@
 ---
 title: "A routine Slack deploy disconnected every user, and getting them back took two hours"
 dek: "Slack's own summary is short: a routine internal deployment knocked all customers offline and left them unable to reconnect. Recovery meant adding hardware and rate-limiting reconnections so the returning crowd didn't knock it over again."
+belief: "Slack expected a routine internal deploy to be invisible to users. It disconnected all of them."
 date: 2017-10-31
 company: Slack
 kind: outage

@@ -1,6 +1,7 @@
 ---
 title: "The 2012 leap second put Linux timers one second in the future and pinned CPUs worldwide"
 dek: "When the kernel inserted the leap second it stepped the system clock back but never told the high-resolution timer code. Every timer set for less than a second fired immediately, re-armed, and fired again. Java and MySQL hosts sat at full CPU until someone set the date."
+belief: "Linux leap seconds were thought to be boring. In 2012 the kernel's timers fired nonstop and pinned CPUs."
 date: 2012-06-30
 company: Linux kernel
 kind: bug

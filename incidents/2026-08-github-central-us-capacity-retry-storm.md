@@ -1,6 +1,7 @@
 ---
 title: "A sidecar that didn't scale and a retry loop in VS Code kept GitHub down for almost eight hours"
 dek: "A new traffic peak hit GitHub's Central US datacenter. An Istio sidecar reached its concurrency limit and didn't autoscale, because the policy only watched the main service. Load balancers ran out of flow capacity and authentication failed across the site. Recovery was then slowed by a latent client retry bug that multiplied Copilot token traffic about tenfold."
+belief: "GitHub thought autoscaling covered its services. An Istio sidecar hit its limit and never scaled."
 date: 2026-08-17
 company: GitHub
 kind: outage

@@ -1,6 +1,7 @@
 ---
 title: "A Dropbox code update let some accounts be accessed without the right password"
 dek: "A code update broke Dropbox's authentication check. From 1:54pm to 5:46pm Pacific, logins could succeed without the correct password, and the only fix for sessions already open was to end all of them."
+belief: "A Dropbox code update broke a login check. Accounts could be opened without the right password."
 date: 2011-06-19
 company: Dropbox
 kind: security-breach

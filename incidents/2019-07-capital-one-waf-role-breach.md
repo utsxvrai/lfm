@@ -1,6 +1,7 @@
 ---
 title: "A misconfigured firewall handed out cloud credentials and leaked Capital One's credit applications"
 dek: "Commands sent through a misconfigured web application firewall made a server fetch the credentials of its own role, and that role could list and copy more than 700 storage buckets. The data sat in a GitHub gist for months before a stranger emailed the bank."
+belief: "Capital One's firewall was meant to keep attackers out. A misconfiguration handed out its cloud credentials."
 date: 2019-07-19
 company: Capital One
 kind: security-breach

@@ -1,6 +1,7 @@
 ---
 title: "One maintenance command disconnected Facebook's backbone and its DNS withdrew itself from the internet"
 dek: "A command meant to assess backbone capacity took down every backbone link instead, and a buggy audit tool let it through. Facebook's DNS servers, designed to withdraw their BGP routes when they lose the data centers, did exactly that, and facebook.com stopped resolving for the whole internet."
+belief: "Facebook trusted an audit tool to stop bad backbone commands. A bug let one through, and its DNS went dark."
 date: 2021-10-04
 company: Meta
 kind: outage

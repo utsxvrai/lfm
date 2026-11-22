@@ -1,6 +1,7 @@
 ---
 title: "A support ticket from a free Canvas account gave attackers a support rep's session, then the data"
 dek: "Anyone could sign up for Canvas Free-for-Teacher and open a support ticket. A ticket carrying stored XSS ran in a customer-service rep's authenticated session, and the attacker used that session to pull usernames, emails, enrollments and messages through Canvas's APIs. A second XSS a week later defaced login pages during finals."
+belief: "Instructure's free Canvas teacher accounts looked low-risk. One sent stored XSS in a support ticket that ran as staff."
 date: 2026-04-29
 company: Instructure
 kind: security-breach

@@ -1,6 +1,7 @@
 ---
 title: "Atlassian ran a cleanup script with site IDs instead of app IDs and deleted 883 customer sites"
 dek: "A script meant to remove a retired app was handed the IDs of whole cloud sites. The deletion API accepted either kind of ID and did whatever the ID pointed to. Backups were fine; restoring hundreds of multi-product sites into shared, live infrastructure took up to 14 days."
+belief: "Atlassian thought its cleanup script was deleting an app. It was given site IDs and deleted 883 customer sites."
 date: 2022-04-05
 company: Atlassian
 kind: data-loss

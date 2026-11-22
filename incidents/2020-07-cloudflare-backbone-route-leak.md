@@ -1,6 +1,7 @@
 ---
 title: "Deactivating the wrong line sent Cloudflare's backbone traffic to Atlanta"
 dek: "To take traffic off Atlanta, an engineer deactivated the prefix-list in a routing policy instead of the whole term. With no match condition, the term matched every route and announced them all to the backbone at a higher local-preference, so Atlanta attracted everyone's traffic."
+belief: "Cloudflare tried to move traffic off Atlanta. One deactivated config line sent its backbone traffic there instead."
 date: 2020-07-17
 company: Cloudflare
 kind: outage

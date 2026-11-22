@@ -1,6 +1,7 @@
 ---
 title: "An empty query parameter told Cloudflare's cleanup job to delete every BYOIP prefix"
 dek: "A new automated sub-task asked the Addressing API for prefixes pending deletion with `?pending_delete` and no value. The server only took the 'pending' branch when the value was non-empty, so it returned all BYOIP prefixes, and the task began deleting them. About 1,100 prefixes were withdrawn from the Internet, and about 300 needed a global config push to restore."
+belief: "Cloudflare thought '?pending_delete' returned only prefixes pending deletion. It returned every BYOIP prefix."
 date: 2026-02-20
 company: Cloudflare
 kind: outage

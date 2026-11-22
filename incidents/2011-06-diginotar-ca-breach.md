@@ -1,6 +1,7 @@
 ---
 title: "DigiNotar: a breached certificate authority signed a *.google.com cert used to spy on Iran"
 dek: "An intruder got from an outdated public web server to the CA servers and issued 531 known rogue certificates. One of them, for *.google.com, was used against about 300,000 IP addresses, almost all in Iran, and the CA's revocation checks reported it as valid."
+belief: "DigiNotar thought its CA breach was under control. A rogue *.google.com certificate was still out there."
 date: 2011-06-17
 company: DigiNotar
 kind: security-breach

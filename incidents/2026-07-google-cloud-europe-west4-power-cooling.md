@@ -1,6 +1,7 @@
 ---
 title: "A 3ms voltage dip cost Google Cloud's europe-west4-a zone power and cooling for 15 hours"
 dek: "A brief transient on the utility grid tripped both power feeds into a third-party data center in the Netherlands. One backup generator failed, one row of racks lost both feeds, and the chiller controller dropped offline while the redundant chiller was out for construction. The data hall reached 44°C and Google powered down VMware Engine, Bare Metal Solution and NetApp Volumes."
+belief: "Google Cloud expected redundant power and cooling to absorb a single fault. One voltage transient overheated a zone."
 date: 2026-07-15
 company: Google
 kind: outage

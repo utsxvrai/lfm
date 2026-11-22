@@ -1,6 +1,7 @@
 ---
 title: "A 1.35 Tbps memcached reflection attack knocked GitHub offline for minutes"
 dek: "Attackers spoofed GitHub's address in tiny UDP requests to exposed memcached servers, which answered with huge responses. GitHub's own transit filled up, so it withdrew its BGP routes and re-announced them through Akamai to get the traffic scrubbed."
+belief: "GitHub thought extra transit capacity would absorb DDoS attacks. Memcached amplification filled its pipes."
 date: 2018-02-28
 company: GitHub
 kind: outage

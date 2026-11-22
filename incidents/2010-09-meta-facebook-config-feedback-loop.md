@@ -1,6 +1,7 @@
 ---
 title: "Facebook's self-healing config check sent the whole site to the database"
 dek: "An automated system replaced bad cached config values with the copy from the database. Then the database copy itself was the bad value, and every client tried to fix it at once."
+belief: "Facebook's config check trusted the database copy. It was the bad value, and every client hammered it."
 date: 2010-09-23
 company: Meta
 kind: outage

@@ -1,6 +1,7 @@
 ---
 title: "A fork PR poisoned TanStack's Actions cache, and the release job published 84 malicious npm versions"
 dek: "An attacker never stole an npm token. A pull_request_target workflow ran their fork's code with the base repo's cache scope, which let them plant a poisoned pnpm store. The release workflow on main restored it, and the malware read an OIDC token out of runner memory and published straight to npm."
+belief: "TanStack thought a read-only pull_request_target job was harmless. It poisoned the release cache."
 date: 2026-05-11
 company: TanStack
 kind: security-breach

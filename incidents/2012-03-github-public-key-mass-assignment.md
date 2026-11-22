@@ -1,6 +1,7 @@
 ---
 title: "One unchecked form field let a stranger push to the Rails repository on GitHub"
 dek: "GitHub's public-key update form trusted every parameter it was sent. A user added his own SSH key to the rails organization and pushed a file to the project to prove it. The bug class is called mass assignment, and it lives in any framework that maps request bodies straight onto models."
+belief: "GitHub's public-key form trusted every parameter sent. A user added their own SSH key to the Rails org."
 date: 2012-03-04
 company: GitHub
 kind: security-breach

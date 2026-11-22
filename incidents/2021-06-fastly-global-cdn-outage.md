@@ -1,6 +1,7 @@
 ---
 title: "One customer's valid config change took down 85% of Fastly's CDN"
 dek: "A bug shipped in a 12 May software deployment sat dormant for almost four weeks until one customer pushed a perfectly valid configuration that hit the exact conditions to trigger it. Because configuration on a CDN is global by design, the trigger reached most of the network at once."
+belief: "Fastly treated a valid config as a safe config. One customer's change took down 85% of its CDN."
 date: 2021-06-08
 company: Fastly
 kind: outage

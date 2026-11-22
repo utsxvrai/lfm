@@ -1,6 +1,7 @@
 ---
 title: "Half a second of extra SSH login time exposed the xz-utils backdoor"
 dek: "Upstream xz 5.6.0 and 5.6.1 shipped release tarballs that built a backdoor into liblzma. Through a distro patch, liblzma was loaded into sshd, where the backdoor hijacked RSA_public_decrypt before the linker locked the table down. It was found because SSH logins got slower."
+belief: "Distros trusted xz release tarballs to be the project's source. They built an SSH backdoor into liblzma."
 date: 2024-03-29
 company: xz-utils
 kind: security-breach

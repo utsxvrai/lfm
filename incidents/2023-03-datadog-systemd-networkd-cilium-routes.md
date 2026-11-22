@@ -1,6 +1,7 @@
 ---
 title: "Datadog's first global outage: an automatic systemd update deleted Kubernetes routes in every region at once"
 dek: "A legacy auto-update channel applied a systemd security patch to tens of thousands of nodes in the same one-hour window. When systemd-networkd restarted, it removed the routes Cilium had installed, and nodes in five regions on three clouds went offline together."
+belief: "Datadog thought every change went through its region-by-region rollout. An OS auto-update hit every region at once."
 date: 2023-03-08
 company: Datadog
 kind: outage

@@ -1,6 +1,7 @@
 ---
 title: "Reddit's Pi-Day outage: a renamed Kubernetes node label silently removed every Calico route reflector"
 dek: "Upgrading Reddit's legacy Kubernetes cluster to 1.24 removed the 'master' node label. A years-old, uncommitted Calico route-reflector config selected nodes by that label, so the cluster's routing mesh lost all its reflectors and every route dropped."
+belief: "Reddit thought a Kubernetes upgrade proven on other clusters was safe. A removed node label dropped every route."
 date: 2023-03-14
 company: Reddit
 kind: outage

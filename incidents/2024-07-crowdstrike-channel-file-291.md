@@ -1,6 +1,7 @@
 ---
 title: "CrowdStrike Channel File 291: 21 fields defined, 20 supplied, and a kernel driver read past the end"
 dek: "A Falcon content update made the sensor's Content Interpreter compare against a 21st input that the sensor code never supplied. In a kernel driver, that out-of-bounds read crashed Windows hosts. The mismatch had existed since February; it took a non-wildcard value in field 21 to reach it."
+belief: "CrowdStrike treated its content update as config, not code. It crashed Windows from the kernel."
 date: 2024-07-19
 company: CrowdStrike
 kind: outage
